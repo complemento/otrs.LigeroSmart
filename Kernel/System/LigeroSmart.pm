@@ -182,6 +182,56 @@ sub Search {
     return %SearchResultsHash;
 }
 
+sub SearchTemplate {
+    my ( $Self, %Param ) = @_;
+
+    if (!$Self->{Config}->{Nodes}){
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "You must specify at least one node"
+        );
+        return;
+    }
+
+    my $Indexes = $Param{Indexes} || '';
+    my $Types   = $Param{Types} || '';
+
+    # Connect
+    my @Nodes = @{$Self->{Config}->{Nodes}};
+    
+    my $e = Search::Elasticsearch->new(
+        nodes => @Nodes,
+        (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
+    );
+    
+    my @SearchResults;
+    
+    try {
+        @SearchResults = $e->search_template(
+            'index' => $Indexes,
+            'type'  => $Types,
+            'body'  => {
+                %{$Param{Data}}
+            }
+        );
+    } catch {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "error"
+        );
+    
+    }
+
+    
+    my %SearchResultsHash;
+    
+    if(@SearchResults){
+        %SearchResultsHash = %{ $SearchResults[0] };    
+    }
+
+    return %SearchResultsHash;
+}
+
 
 =item DeleteByQuery
 
