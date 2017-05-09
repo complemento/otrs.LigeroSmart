@@ -439,7 +439,7 @@ sub FullTicketGet {
 
     #encode ticket stuff and remove undefined attributes
     for my $key (keys %Ticket){
-        $Ticket{$key}=encode("utf-8", $Ticket{$key});
+     #   $Ticket{$key}=encode("utf-8", $Ticket{$key});
         delete $Ticket{$key} unless defined($Ticket{$key});
     }
 
@@ -509,7 +509,7 @@ sub FullTicketGet {
     my $JSONString = $JSONObject->Encode(
        Data     => \%Ticket,
     );
-    $JSONString = encode("utf-8", $JSONString);
+    #$JSONString = encode("utf-8", $JSONString);
     my $TicketUtf8 = $JSONObject->Decode(
        Data => $JSONString,
     );
