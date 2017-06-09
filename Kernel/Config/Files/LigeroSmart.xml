@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <otrs_config version="1.0" init="Application">
-    <ConfigItem Name="LigeroSmart###Nodes" Required="0" Valid="1">
+    <ConfigItem Name="LigeroSmart###Nodes" Required="0" Valid="1" ConfigLevel="100">
         <Description Translatable="1">Elasticsearch Nodes</Description>
         <Group>LigeroSmart</Group>
         <SubGroup>Core</SubGroup>
@@ -8,15 +8,14 @@
             <Array></Array>
         </Setting>
     </ConfigItem>
-    
-
-    <ConfigItem Name="LigeroSmart::LigeroSearch" Required="1" Valid="1">
+	<ConfigItem Name="LigeroSmart::LigeroSearch" Required="1" Valid="1" ConfigLevel="100">>
         <Description Translatable="1">Ligero Smart Search.</Description>
         <Group>LigeroSmart</Group>
-        <SubGroup>FullTextSearch</SubGroup>
+        <SubGroup>Core</SubGroup>
         <Setting>
             <Hash>
                 <Item Key="Indexes">otrs</Item>
+                <Item Key="Types">ticket</Item>
                 <Item Key="Types">ticket</Item>
                 <Item Key="MaxResults">9999</Item>
                 <Item Key="MinScore">1</Item>
@@ -25,7 +24,14 @@
         </Setting>
     </ConfigItem>
 
-
+    <ConfigItem Name="LigeroSmart::Index" Required="1" Valid="1" ConfigLevel="100">
+        <Description Translatable="1">Index Prefix.</Description>
+        <Group>LigeroSmart</Group>
+        <SubGroup>Core</SubGroup>
+        <Setting>
+            <String>companyname</String>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="GenericInterface::Invoker::Module###LigeroSmart::LigeroSmartIndexer" Required="0" Valid="1">
         <Description Translatable="1">GenericInterface module registration for the invoker layer.</Description>
         <Group>LigeroSmart</Group>

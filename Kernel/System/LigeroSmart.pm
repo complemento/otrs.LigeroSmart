@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2010-2016 Complemento - Liberdade e Tecnologia - http://www.complemento.net.br
+# Copyright (C) 2010-2017 Complemento - Liberdade e Tecnologia - http://www.complemento.net.br
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -385,15 +385,168 @@ sub Index {
         %AdditionalOptions
     );
 
-#    } catch {
-#        $Kernel::OM->Get('Kernel::System::Log')->Log(
-#            Priority => 'error',
-#            Message  => "error indexing document"
-#        );
-#        return 0;
-#    }
+}
+
+=item IndexCreate
+
+Create a new Index on Elasticsearch
+
+    my $Result  = $LigeroSmartObject->IndiceCreate(
+        Index   => 'otrs',   # Required
+        Language => 'pt_BR', # Required
+        Body    => @$%       # Required Encoded perl data structure reference which will be used as document body (settings, analyser, mapping)
+    );
+
+Returns:
+
+@TODO: Check the return object
+    
+Usage Example:
+
+
+
+=cut
+
+sub IndexCreate {
+    my ( $Self, %Param ) = @_;
+
+    if (!$Self->{Config}->{Nodes}){
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "You must specify at least one node"
+        );
+        return;
+    }
+
+    for my $Key (qw(Index Language Body)) {
+        if ( !$Param{$Key} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Need $Key!",
+            );
+            return;
+        }
+    }
+
+    my $IndexPrefix	= $Param{Index};
+    my $Language    = $Param{Language};
+    my $Body  		= $Param{Body};
+	
+    # Connect
+    my @Nodes = @{$Self->{Config}->{Nodes}};
+    
+    my $e = Search::Elasticsearch->new(
+        nodes => @Nodes,
+        (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
+    );    
+    
+	# Check if theres is an index version for this prefix and language
+	# Extract version if it exists
+	my $Version = $Self->CheckCurrentIndexVersion(
+		Index => $IndexPrefix,
+		Language => $Language
+	);
+
+	# Increase one to the version
+	$Version++;
+
+	my $Index       = $IndexPrefix . "_" . $Language. "_v" . $Version;
+	
+	
+	$Kernel::OM->Get('Kernel::System::Log')->Log( Priority => 'error', Message => "aaaaaaaaaaaa --------- $Index" );
+	
+	# Create new index
+	my $Result;
+	my $Error;
+	try {
+		$Result = $e->indices->create(
+			'index'    => lc($Index),
+			'body'     => {
+				%{$Body}
+			},
+		);	
+	} catch {
+		$Kernel::OM->Get('Kernel::System::Log')->Log( Priority => 'error', Message => "$_" );
+	};
+
 
     return $Result;
+}
+
+
+=item CheckCurrentIndexVersion()
+
+Check which is current Index Version for a Language
+
+    my $CurrentVersion = $LigeroElasticsearch->CheckCurrentIndexVersion(
+        Index    => companyindex, # required (Company Prefix)
+        Language => 'pt_BR' $ required
+    );
+
+    returns a Number or 0 if not created yet.
+
+=cut
+sub CheckCurrentIndexVersion {
+    my ( $Self, %Param ) = @_;
+
+	
+    if (!$Self->{Config}->{Nodes}){
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "You must specify at least one node"
+        );
+        return;
+    }
+
+    for my $Key (qw(Index Language)) {
+        if ( !$Param{$Key} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Need $Key!",
+            );
+            return;
+        }
+    }
+
+    my $IndexPrefix	= $Param{Index};
+    my $Language    = $Param{Language};
+
+	my $Index       = $IndexPrefix . "_" . $Language."_index";
+	
+    # Connect
+    my @Nodes = @{$Self->{Config}->{Nodes}};
+    
+    my $e = Search::Elasticsearch->new(
+        nodes => @Nodes,
+        (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
+    );    
+
+	my $Result;
+	
+	my $Error=0;
+	try {
+		$Result = $e->indices->get_alias(
+			'index'    => lc($Index),
+		);
+	} catch {
+		# Probably index was never create
+		$Kernel::OM->Get('Kernel::System::Log')->Log( Priority => 'error', Message => "$_" );
+		$Error=1;
+	};
+	
+	my $Version=0;
+	if(!$Error){
+		my @Indexes = keys %{$Result};
+		
+		my $IndexVersion;
+		($IndexVersion) = $Indexes[0] =~ /(\d+)/;
+
+		if ($IndexVersion){
+			$Version = $IndexVersion;
+		}
+	}
+	
+	return $Version;
 }
 
 =item FullTicketGet()
