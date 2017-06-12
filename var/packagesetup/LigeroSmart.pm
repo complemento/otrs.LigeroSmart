@@ -227,7 +227,7 @@ Requester:
       InvokerControllerMapping:
         LigeroTicketIndexer:
           Command: PUT
-          Controller: /otrs/ticket/:TicketID?pipeline=:pipeline
+          Controller: /:Index/ticket/:TicketID?pipeline=:pipeline
     Type: HTTP::REST
 _END_
 

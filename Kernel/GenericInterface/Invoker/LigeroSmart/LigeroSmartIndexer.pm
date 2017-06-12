@@ -97,8 +97,23 @@ sub PrepareRequest {
                                                                     Attachments =>  $Config->{SendAttachmentsToES}||'Yes'
                                                                 );
 
+	my $Index = $Kernel::OM->Get('Kernel::Config')->Get('LigeroSmart::Index');
+	$Index .= "_";
+
+	my %QueuePreferences = $Kernel::OM->Get('Kernel::System::Queue')->QueuePreferencesGet(
+                QueueID => $Param{Data}->{Ticket}->{QueueID},
+                UserID       => '1',
+	);
+	delete $QueuePreferences{Language} if $QueuePreferences{Language} eq '_Default_';
+	$Index .= $QueuePreferences{Language} || $Kernel::OM->Get('Kernel::Config')->Get('DefaultLanguage') || 'en';
+
+
+	$Index .= "_index";
+	$Index = lc($Index);
+	
     # WORKAROUND: this way we can set the end of URI with pipeline=attachment without modifying OTRS REST
     $Param{Data}->{pipeline} = 'attachment' ;
+    $Param{Data}->{Index} = $Index;
 
     return {
         Success => 1,

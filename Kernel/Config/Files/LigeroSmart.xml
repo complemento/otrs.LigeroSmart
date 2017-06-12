@@ -19,7 +19,20 @@
             </Hash>
         </Setting>
     </ConfigItem>
-
+    <ConfigItem Name="QueuePreferences###Z4001-QueueLanguage" Required="0" Valid="1">
+        <Description Translatable="1">Language</Description>
+        <Group>LigeroServiceCatalog</Group>
+        <SubGroup>Frontend::Queue::Preferences</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::QueuePreferences::Language</Item>
+                <Item Key="Label" Translatable="1">Ligero Language</Item>
+                <Item Key="Desc" Translatable="1">Language used for Queue indexation on Ligero</Item>
+                <Item Key="Block">Option</Item>
+                <Item Key="PrefKey">Language</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="LigeroSmart::Index" Required="1" Valid="1" ConfigLevel="100">
         <Description Translatable="1">Index Prefix.</Description>
         <Group>LigeroSmart</Group>
