@@ -14,12 +14,8 @@
         <SubGroup>Core</SubGroup>
         <Setting>
             <Hash>
-                <Item Key="Indexes">otrs</Item>
-                <Item Key="Types">ticket</Item>
-                <Item Key="Types">ticket</Item>
                 <Item Key="MaxResults">9999</Item>
                 <Item Key="MinScore">1</Item>
-                <Item Key="Template">LigeroSearch</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -56,5 +52,36 @@
             </Option>
         </Setting>
     </ConfigItem>
+<ConfigItem Name="LigeroSmart::FullTextSearch###InlineQueryTemplate" Required="1" Valid="1" ConfigLevel="100">
+        <Description Translatable="1">Full Search Template.</Description>
+        <Group>LigeroSmart</Group>
+        <SubGroup>Core::Search::Templates</SubGroup>
+        <Setting>
+            <TextArea>
+{
+		    "bool": {
+		        "should": [
+		            {
+		                "prefix": {
+		                    "_all": {
+		                        "value":"{{Query}}",
+		                        "boost": 10
+		                    }
+		                }
+		            },
+		            {
+		                "match": {
+		                    "_all": {
+		                        "query":"{{Query}}"
+		                    }
+		                }
+		            }
+		        ]
+		    }
+}
+			</TextArea>
+		</Setting>
+	</ConfigItem>
+
 
 </otrs_config>

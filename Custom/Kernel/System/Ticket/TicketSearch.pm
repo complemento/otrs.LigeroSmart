@@ -1,6 +1,6 @@
 # --
 # Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
-# Edit by Complemento http://www.complemento.net.br on 2016
+# Edit by Complemento http://www.complemento.net.br on 2017
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -271,7 +271,7 @@ To find tickets in your system.
 
         # OrderBy and SortBy (optional)
         OrderBy => 'Down',  # Down|Up
-        SortBy  => 'Age',   # Owner|Responsible|CustomerID|State|TicketNumber|Queue|Priority|Age|Type|Lock
+        SortBy  => 'Age',   # Created|Owner|Responsible|CustomerID|State|TicketNumber|Queue|Priority|Age|Type|Lock
                             # Changed|Title|Service|SLA|PendingTime|EscalationTime
                             # EscalationUpdateTime|EscalationResponseTime|EscalationSolutionTime
                             # DynamicField_FieldNameX
@@ -322,33 +322,28 @@ sub TicketSearch {
     
     # COMPLEMENTO - LIGERO SEARCH
     my $ParamObject = $Kernel::OM->Get('Kernel::System::Web::Request');
-    my $LigeroOperator="AND";
     if ( $Param{Fulltext} || $Param{TicketFulltext} ) {
-        # @TODO VERIFICAR SE ESTA É A MELHOR ABORDAGEM
         if ($Param{TicketFulltext}) {
-            $LigeroOperator = "OR";
             # for the AgentLinkObject screen
             $Param{Fulltext} = $Param{TicketFulltext};
         }        
-#        $GetParam{ContentSearch} = 'OR';
 
         # GET FULL TEXT SEARCH IDs from Ligero Smart Server
         my %Config = %{$Kernel::OM->Get('Kernel::Config')->Get("LigeroSmart::LigeroSearch")};
         
         # MONTA O HASH DE PESQUISA DE ACORDO COM OS BLOCOS DEFINIDOS PELO ADMINSITRADOR
-        my $Indexes = $Config{Indexes} || '';
-        my $Types   = $Config{Types}   || '';
+        my $Index = $Kernel::OM->Get('Kernel::Config')->Get('LigeroSmart::Index');
+        my $Type   = 'ticket';
 
         my %Search;
+
+		$Search{inline}->{query} = 
+					$Kernel::OM->Get('Kernel::System::JSON')->Decode(Data => $Kernel::OM->Get('Kernel::Config')->Get('LigeroSmart::FullTextSearch')->{InlineQueryTemplate});
         
-        $Search{query}->{template}->{file}=$Config{Template} || 'LigeroSearch';
-        
-        $Search{_source} = qw( _id );
-       
-#        my %SearchParams = %{ $Config{Parameters} };
+        $Search{inline}->{_source} = qw( _id );
+
         # Trata a query removendo caracteres especiais e reduzindo tudo para uma unica linha
         my $Query = $Param{Fulltext};
-#            $Query = encode("utf-8", $Query);
         $Query =~ s/(\n|\r|\.|:|!|\/|RES:|RE:|FWD:)/ /ig;
         $Query =~ s/^\s+|\s+$//g;
         $Query =~ s/(\(|\)|")/ $1 /g;
@@ -374,27 +369,26 @@ sub TicketSearch {
 
         $Query = join(" ",@terms_new);
 
-        $Search{query}->{template}->{params}->{"Query"} = $Query;
+        $Search{params}->{"Query"} = $Query;
 
         # MaxResults
         if($Config{MaxResults} ne ""){
-            $Search{size} = $Config{MaxResults};
+            $Search{inline}->{size} = $Config{MaxResults};
         }
 
         # MinScore
         if($Config{MinScore} ne ""){
-            $Search{min_score} = $Config{MinScore};
+            $Search{inline}->{min_score} = $Config{MinScore};
         }
         
-        $Search{query}->{template}->{params}->{"Operator"} = $LigeroOperator;
-        
         # REALIZA A PESQUISA NO LIGERO SMART
-        my %SearchResultsHash = $Kernel::OM->Get('Kernel::System::LigeroSmart')->Search(
-            Indexes => $Indexes,
-            Types   => $Types,
+		my %SearchResultsHash = $Kernel::OM->Get('Kernel::System::LigeroSmart')->SearchTemplate(
+			# Search on all languages
+            Indexes => lc($Index."_*_search"),
+            Types   => $Type,
             Data    => \%Search,
-        );
-
+ 
+	    );
         my @Results;
 
         if ($SearchResultsHash{hits}->{total} > 0) {
@@ -402,6 +396,7 @@ sub TicketSearch {
 
             my (@TicketIDs) = map { $_->{"_id"} } @Results;
             $Param{TicketID} = \@TicketIDs;
+
             # @TODO: AgentTicketSearch overwrites the following parameters. Maybe we should fix it in AgentTicketSearch
             for my $Key (qw(From To Cc Subject Body)) {
                 delete $Param{$Key};
@@ -429,6 +424,7 @@ sub TicketSearch {
         Type                   => 'st.type_id',
         Priority               => 'st.ticket_priority_id',
         Age                    => 'st.create_time_unix',
+        Created                => 'st.create_time',
         Changed                => 'st.change_time',
         Service                => 'st.service_id',
         SLA                    => 'st.sla_id',
@@ -541,16 +537,10 @@ sub TicketSearch {
     }
 
     # check sort/order by options
-    my @SortByArray;
-    my @OrderByArray;
-    if ( ref $SortBy eq 'ARRAY' ) {
-        @SortByArray  = @{$SortBy};
-        @OrderByArray = @{$OrderBy};
-    }
-    else {
-        @SortByArray  = ($SortBy);
-        @OrderByArray = ($OrderBy);
-    }
+    my @SortByArray = ( ref $SortBy eq 'ARRAY' ? @{$SortBy} : ($SortBy) );
+    my %LookupSortByArray = map { $_ => 1 } @SortByArray;
+    my @OrderByArray = ( ref $OrderBy eq 'ARRAY' ? @{$OrderBy} : ($OrderBy) );
+
     for my $Count ( 0 .. $#SortByArray ) {
         if (
             !$SortOptions{ $SortByArray[$Count] }
@@ -581,7 +571,7 @@ sub TicketSearch {
         $SQLSelect = 'SELECT DISTINCT st.id, st.tn';
     }
 
-    my $SQLFrom = ' FROM ticket st INNER JOIN queue sq ON sq.id = st.queue_id ';
+    my $SQLFrom = ' FROM ticket st ';
 
     my $ArticleJoinSQL = $Self->_ArticleIndexQuerySQL( Data => \%Param ) || '';
 
@@ -2233,6 +2223,44 @@ sub TicketSearch {
                 $SQLSelect .= ", $SQLOrderField ";
                 $SQLExt    .= " $SQLOrderField ";
             }
+            elsif (
+                $SortByArray[$Count] eq 'Owner'
+                || $SortByArray[$Count] eq 'Responsible'
+                )
+            {
+                # Include first name, last name and login in select.
+                $SQLSelect
+                    .= ', ' . $SortOptions{ $SortByArray[$Count] }
+                    . ', u.first_name, u.last_name, u.login ';
+
+                # Join the users table on user's ID.
+                $SQLFrom
+                    .= ' JOIN users u '
+                    . ' ON ' . $SortOptions{ $SortByArray[$Count] } . ' = u.id ';
+
+                my $FirstnameLastNameOrder = $Kernel::OM->Get('Kernel::Config')->Get('FirstnameLastnameOrder') || 0;
+                my $OrderBySuffix = $OrderByArray[$Count] eq 'Up' ? 'ASC' : 'DESC';
+
+                # Sort by configured first and last name order.
+                if ( $FirstnameLastNameOrder eq '1' || $FirstnameLastNameOrder eq '6' ) {
+                    $SQLExt .= " u.last_name $OrderBySuffix, u.first_name ";
+                }
+                elsif ( $FirstnameLastNameOrder eq '2' ) {
+                    $SQLExt .= " u.first_name $OrderBySuffix, u.last_name $OrderBySuffix, u.login ";
+                }
+                elsif ( $FirstnameLastNameOrder eq '3' || $FirstnameLastNameOrder eq '7' ) {
+                    $SQLExt .= " u.last_name $OrderBySuffix, u.first_name $OrderBySuffix, u.login ";
+                }
+                elsif ( $FirstnameLastNameOrder eq '4' ) {
+                    $SQLExt .= " u.login $OrderBySuffix, u.first_name $OrderBySuffix, u.last_name ";
+                }
+                elsif ( $FirstnameLastNameOrder eq '5' || $FirstnameLastNameOrder eq '8' ) {
+                    $SQLExt .= " u.login $OrderBySuffix, u.last_name $OrderBySuffix, u.first_name ";
+                }
+                else {
+                    $SQLExt .= " u.first_name $OrderBySuffix, u.last_name ";
+                }
+            }
             else {
 
                 # regular sort
@@ -2247,6 +2275,11 @@ sub TicketSearch {
                 $SQLExt .= ' DESC';
             }
         }
+    }
+
+    # Add only the sql join for the queue table, if columns from the queue table exists in the sql statement.
+    if ( %GroupList || $LookupSortByArray{Queue} ) {
+        $SQLFrom .= ' INNER JOIN queue sq ON sq.id = st.queue_id ';
     }
 
     # check cache
@@ -2390,13 +2423,17 @@ sub SearchStringStopWordsFind {
         WORD:
         for my $Word ( @{ $StopWordRaw->{$Language} } ) {
 
-            next WORD if !$Word;
+            next WORD if !defined $Word || !length $Word;
 
             $Word = lc $Word;
 
             $StopWord{$Word} = 1;
         }
     }
+
+    my $SearchIndexAttributes = $Kernel::OM->Get('Kernel::Config')->Get('Ticket::SearchIndex::Attribute');
+    my $WordLengthMin         = $SearchIndexAttributes->{WordLengthMin} || 3;
+    my $WordLengthMax         = $SearchIndexAttributes->{WordLengthMax} || 30;
 
     my %StopWordsFound;
     SEARCHSTRING:
@@ -2418,7 +2455,8 @@ sub SearchStringStopWordsFind {
             }
         }
 
-        @{ $StopWordsFound{$Key} } = grep { $StopWord{$_} } sort keys %Words;
+        @{ $StopWordsFound{$Key} }
+            = grep { $StopWord{$_} || length $_ < $WordLengthMin || length $_ > $WordLengthMax } sort keys %Words;
     }
 
     return \%StopWordsFound;
@@ -2471,25 +2509,28 @@ condition string from an array.
 sub _InConditionGet {
     my ( $Self, %Param ) = @_;
 
-    # check needed stuff
-    for my $Key (qw(TableColumn IDRef)) {
-        if ( !$Param{$Key} ) {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => 'error',
-                Message  => "Need $Key!",
-            );
-            return;
-        }
+    if ( !$Param{TableColumn} ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "Need TableColumn!",
+        );
+        return;
+    }
+
+    if ( !$Param{IDRef} || ref $Param{IDRef} ne 'ARRAY' || !@{ $Param{IDRef} } ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "Need IDRef!",
+        );
+        return;
     }
 
     # sort ids to cache the SQL query
     my @SortedIDs = sort { $a <=> $b } @{ $Param{IDRef} };
 
-    # quote values
-    SORTEDID:
-    for my $Value (@SortedIDs) {
-        next SORTEDID if !defined $Kernel::OM->Get('Kernel::System::DB')->Quote( $Value, 'Integer' );
-    }
+    # Error out if some values were not integers.
+    @SortedIDs = map { $Kernel::OM->Get('Kernel::System::DB')->Quote( $_, 'Integer' ) } @SortedIDs;
+    return if scalar @SortedIDs != scalar @{ $Param{IDRef} };
 
     # split IN statement with more than 900 elements in more statements combined with OR
     # because Oracle doesn't support more than 1000 elements for one IN statement.
