@@ -38,22 +38,27 @@ sub Configure {
         HasValue    => 0,
     );
 
+    $Self->AddOption(
+        Name        => 'DefaultLanguage',
+        Description => "Install mapping for default OTRS Language",
+        Required    => 0,
+        HasValue    => 0,
+    );
+
     return;
 }
 
 sub Run {
     my ( $Self, %Param ) = @_;
 
-    my $JSONObject = $Kernel::OM->Get('Kernel::System::JSON');
-
     $Self->Print("<yellow>Creating Elasticsearch Mappings...</yellow>\n");
 
-	if (!$Self->GetOption('LanguageCode') && !$Self->GetOption('AllLanguages')){
-		$Self->Print("<yellow>You need to specify at least one option between LanguageCode or AllLanguages.</yellow>\n");
+	if (!$Self->GetOption('LanguageCode') && !$Self->GetOption('AllLanguages') && !$Self->GetOption('DefaultLanguage')){
+		$Self->Print("<yellow>You need to specify at least one option between LanguageCode, DefaultLanguage or AllLanguages.</yellow>\n");
 		return $Self->ExitCodeOk();
 	}
-	if ($Self->GetOption('LanguageCode') && $Self->GetOption('AllLanguages')){
-		$Self->Print("<yellow>You need to specify only one option between LanguageCode or AllLanguages.</yellow>\n");
+	if ($Self->GetOption('LanguageCode') && $Self->GetOption('AllLanguages') && $Self->GetOption('DefaultLanguage')){
+		$Self->Print("<yellow>You need to specify only one option between LanguageCode, DefaultLanguage or AllLanguages.</yellow>\n");
 		return $Self->ExitCodeOk();
 	}
 
@@ -68,22 +73,28 @@ sub Run {
 	if($Self->GetOption('LanguageCode')){
 		push @Languages, $Self->GetOption('LanguageCode');
 	}
-
-	# for each language, call IndexCreate
-	for my $Lang (@Languages){
-		
-		my $Body = $JSONObject->Decode(
-						Data => $LanguagesMappings{$Lang},
-					);
-
-		$Kernel::OM->Get('Kernel::System::LigeroSmart')->IndexCreate(
-			Index 	 => $Index,
-			Language => $Lang,
-			Body  	 => $Body
-		);
+	if($Self->GetOption('DefaultLanguage')){
+		push @Languages, $Kernel::OM->Get('Kernel::Config')->Get('DefaultLanguage');
 	}
 
+	# Create ingest pipelines
+	my $Result = $Kernel::OM->Get('Kernel::System::LigeroSmart')->IngestPipelineInstall();
+	if ($Result == 1){
+		$Self->Print("<yellow>Ingest pipelines created.</yellow>\n");
+	} elsif ($Result == 2) {
+		$Self->Print("<yellow>Ingest pipelines already exists.</yellow>\n");
+	} else {
+		$Self->Print("<red>Failed to create Ingest pipelines.</red>\n");
+	}
 
+	# for each language
+	for my $Lang (@Languages){
+		my $Result = $Kernel::OM->Get('Kernel::System::LigeroSmart')->IndexCreate(
+			Index 	 => $Index,
+			Language => $Lang
+		);
+		$Self->Print("<yellow>Index created: $Result</yellow>\n");
+	}
 
     $Self->Print("<green>Done.</green>\n");
     return $Self->ExitCodeOk();

@@ -24,11 +24,27 @@ sub Configure {
 
     $Self->Description('Install Elasticsearch Mappings for all or one specific language.');
     $Self->AddOption(
+        Name        => 'DefaultLanguage',
+        Description => "Install mapping for default OTRS Language",
+        Required    => 0,
+        HasValue    => 0,
+    );
+
+
+    $Self->AddOption(
         Name        => 'LanguageCode',
         Description => "Single language creation.",
         Required    => 0,
         HasValue    => 1,
 		ValueRegex  => qr/.*/smx,
+    );
+
+    $Self->AddOption(
+        Name        => 'requests-per-second',
+        Description => "Requests Per Second.",
+        Required    => 0,
+        HasValue    => 1,
+        ValueRegex  => qr/^\d+$/smx,
     );
 
     $Self->AddOption(
@@ -46,14 +62,16 @@ sub Run {
 
     $Self->Print("<yellow>Reindexing Elasticsearch Indices...</yellow>\n");
 
-	if (!$Self->GetOption('LanguageCode') && !$Self->GetOption('AllLanguages')){
-		$Self->Print("<yellow>You need to specify at least one option between LanguageCode or AllLanguages.</yellow>\n");
+	if (!$Self->GetOption('LanguageCode') && !$Self->GetOption('AllLanguages') && !$Self->GetOption('DefaultLanguage')){
+		$Self->Print("<yellow>You need to specify at least one option between LanguageCode, DefaultLanguage or AllLanguages.</yellow>\n");
 		return $Self->ExitCodeOk();
 	}
-	if ($Self->GetOption('LanguageCode') && $Self->GetOption('AllLanguages')){
-		$Self->Print("<yellow>You need to specify only one option between LanguageCode or AllLanguages.</yellow>\n");
+	if ($Self->GetOption('LanguageCode') && $Self->GetOption('AllLanguages') && $Self->GetOption('DefaultLanguage')){
+		$Self->Print("<yellow>You need to specify only one option between LanguageCode, DefaultLanguage or AllLanguages.</yellow>\n");
 		return $Self->ExitCodeOk();
 	}
+
+	my $RequestsPerSecond = $Self->GetOption('requests-per-second') || 50;
 
 	my $Index = $Kernel::OM->Get('Kernel::Config')->Get('LigeroSmart::Index');
 
@@ -66,30 +84,34 @@ sub Run {
 	if($Self->GetOption('LanguageCode')){
 		push @Languages, $Self->GetOption('LanguageCode');
 	}
-
-	use JSON;		
-	# create json object - We cannot use OTRS Json object directly because it sanitize true and false and we get errors from elasticsearch
+	if($Self->GetOption('DefaultLanguage')){
+		push @Languages, $Kernel::OM->Get('Kernel::Config')->Get('DefaultLanguage');
+	}
 	
-	my $JSONObject = JSON->new();
-	$JSONObject->allow_nonref(1);
-
 	# for each language, call IndexCreate
 	for my $Lang (@Languages){
-			
-		# decode JSON encoded to perl structure
-		my $Body;
-		# use eval here, as JSON::XS->decode() dies when providing a malformed JSON string
-		if ( !eval { $Body = $JSONObject->decode( $LanguagesMappings{$Lang} ) } ) {
-			$Kernel::OM->Get('Kernel::System::Log')->Log(
-				Priority => 'error',
-				Message  => 'Decoding the JSON string failed: ' . $@,
-			);
-			return;
-		}
-		my $Result = $Kernel::OM->Get('Kernel::System::LigeroSmart')->Reindex(
+		
+		# Create new indice, make alias to search and index, remove index alias of old index
+		my %Result = $Kernel::OM->Get('Kernel::System::LigeroSmart')->Reindex(
 			Index 	 => $Index,
 			Language => $Lang,
+			RequestsPerSecond => $RequestsPerSecond
 		);
+		$Self->Print("<yellow>Reindexing $Lang. Please wait Elasticsearch Task $Result{TaskID} to finish.</yellow>\n");
+		
+		# Monitor Reindex progress
+		my $NotCompleted = 1;
+		while($NotCompleted){
+			my %TaskStatus = $Kernel::OM->Get('Kernel::System::LigeroSmart')->CheckReindexStatus( EsTaskID => $Result{TaskID} );
+			$Self->Print("Progress: <yellow>$TaskStatus{Progress}%</yellow>. Reindexes documents <yellow>$TaskStatus{Created}</yellow>.\n");
+			if($TaskStatus{Completed}){
+				$NotCompleted = 0;
+			}
+			sleep 5;
+		}
+		
+		# Removes Old Index
+		$Kernel::OM->Get('Kernel::System::LigeroSmart')->IndexDelete( Index => $Result{CurrentIndex} );
 
 	}
 

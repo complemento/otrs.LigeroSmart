@@ -12752,4 +12752,98 @@
         }
     }
 }</TextArea> </Setting> </ConfigItem>
+
+    <ConfigItem Name="LigeroSmart::IngestPipeline###attachment" Required="1" Valid="1" ConfigLevel="100">
+        <Description Translatable="1">attachment ingest Attachment.</Description>
+        <Group>LigeroSmart</Group>
+        <SubGroup>Core::Pipelines</SubGroup>
+        <Setting>
+            <TextArea>
+{
+  "description" : "Extract attachment information from Articles",
+  "processors" : [
+    {
+      "foreach": {
+        "ignore_failure": true,
+        "field": "Ticket.Article",
+                "processor": {
+                    "foreach": {
+                        "field":"_ingest._value.Attachment",
+                        "ignore_failure": true,
+                        "processor":{
+                          "attachment": {
+                            "ignore_failure": true,
+                            "target_field": "_ingest._value.attachment",
+                            "field": "_ingest._value.Content"
+                          }
+                        }
+            }
+        }
+      }
+    },
+    {
+      "foreach": {
+        "ignore_failure": true,
+        "field": "Ticket.Article",
+        "processor": {
+                    "foreach": {
+                        "ignore_failure": true,
+                        "field":"_ingest._value.Attachment",
+                        "processor":{
+                          "remove": {
+                            "ignore_failure": true,
+                            "field": "_ingest._value.Content"
+                          }
+                }
+            }
+        }
+      }
+    }
+  ]
+}
+			</TextArea>
+		</Setting>
+	</ConfigItem>
+    <ConfigItem Name="LigeroSmart::IngestPipeline###portallinkattachments" Required="1" Valid="1" ConfigLevel="100">
+        <Description Translatable="1">portallinkattachments ingest Attachment.</Description>
+        <Group>LigeroSmart</Group>
+        <SubGroup>Core::Pipelines</SubGroup>
+        <Setting>
+            <TextArea>
+				{
+  "description" : "Extract attachment information from FAQ Article Attachments",
+  "processors" : [
+    {
+      "foreach": {
+        "ignore_failure": true,
+        "field": "Attachments",
+                        "processor":{
+                          "attachment": {
+                            "ignore_failure": true,
+                            "target_field": "_ingest._value.AttachmentSearch",
+                            "field": "_ingest._value.Content"
+            }
+        }
+      }
+    },
+    {
+        "script": {
+            "ignore_failure": true,
+            "lang": "painless",
+            "inline": "for (Item in ctx.Attachments) { ctx.SearchBody = ctx.SearchBody + ' ' + Item.AttachmentSearch.content;}"
+        }
+    },
+    {
+                          "remove": {
+                            "ignore_failure": true,
+                            "field": "Attachments"
+                          }
+    }
+  ]
+}
+			</TextArea>
+		</Setting>
+	</ConfigItem>
+
+
 </otrs_config>
