@@ -65,7 +65,7 @@ sub Run {
 	my $Index = $Kernel::OM->Get('Kernel::Config')->Get('LigeroSmart::Index');
 
 	# Get all Languages from Config
-	my %LanguagesMappings = %{$Kernel::OM->Get('Kernel::Config')->Get('LigeroSmart::Mappings')};
+	my %LanguagesMappings = %{$Kernel::OM->Get('Kernel::Config')->Get('DefaultUsedLanguages')};
 	my @Languages;
 	if($Self->GetOption('AllLanguages')){
 		@Languages = keys %LanguagesMappings;

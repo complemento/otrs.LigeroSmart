@@ -11,7 +11,7 @@
 	<ConfigItem Name="LigeroSmart::LigeroSearch" Required="1" Valid="1" ConfigLevel="100">>
         <Description Translatable="1">Ligero Smart Search.</Description>
         <Group>LigeroSmart</Group>
-        <SubGroup>Core</SubGroup>
+        <SubGroup>Core::Search::Templates</SubGroup>
         <Setting>
             <Hash>
                 <Item Key="MaxResults">9999</Item>
