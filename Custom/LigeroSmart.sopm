@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <otrs_package version="1.0">
     <Name>LigeroSmart</Name>
-    <Version>5.1.0</Version>
+    <Version>5.1.1</Version>
     <Framework>5.0.x</Framework>
     <Vendor>Complemento [Ligero]</Vendor>
     <URL>http://www.complemento.net.br/</URL>
+	<PackageRequired Version="5.x.x">MultilanguageServiceCatalog</PackageRequired>
     <License>GNU GENERAL PUBLIC LICENSE Version 2, June 1991</License>
     <Description Lang="en">Ligero Smart integrates OTRS with Elasticsearch, giving to OTRS the power of Big Data tools. This package includes System/LigeroSmart.pm which provides Search::Elasticsearch functions to Index, Search and Delete documents on Elasticsearch. It also includes a Modified version of TicketSearch, which finds use fulltext search on Elasticsearch instead of Database. Includes also a GenericInterface Invoker that sends data to Elasticsearch evertime a Ticket is changed. It includes also ElasticsearchFullTicketIndexRebuild, a console script that is intend to be used once LigeroSmart is installed, in order to make a initial index of all tickets in the system.</Description>
     <Filelist>
@@ -15,6 +16,7 @@
         <File Permission="644" Location="Kernel/System/Console/Command/Maint/Ligero/Elasticsearch/TicketIndexRebuild.pm"></File>
         <File Permission="644" Location="var/packagesetup/LigeroSmart.pm"></File>
         <File Permission="644" Location="Custom/LigeroSmart.sopm"></File>
+        <File Permission="644" Location="Kernel/Output/HTML/QueuePreferences/Language.pm"></File>
     </Filelist>
 	<CodeInstall Type="post">
         my $CodeModule = 'var::packagesetup::' . $Param{Structure}-&gt;{Name}-&gt;{Content};
