@@ -1320,17 +1320,16 @@ sub TicketSearch {
     my %CustomerArticleTypes;
     my @CustomerArticleTypeIDs;
     if ( $Param{CustomerUserID} ) {
-        %CustomerArticleTypes = $Self->ArticleTypeList(
-            Result => 'HASH',
-            Type   => 'Customer',
+        my $SenderTypeID = $Kernel::OM->Get('Kernel::System::Ticket::Article')->ArticleSenderTypeLookup(
+            SenderType => 'customer', # customer|system|agent
         );
-        @CustomerArticleTypeIDs = keys %CustomerArticleTypes;
+        push @CustomerArticleTypeIDs, $SenderTypeID;
     }
 
     # restrict search from customers to only customer articles
     if ( $Param{CustomerUserID} && $ArticleIndexSQLExt ) {
         $SQLExt .= $Self->_InConditionGet(
-            TableColumn => 'art.article_type_id',
+            TableColumn => 'art.article_sender_type_id',
             IDRef       => \@CustomerArticleTypeIDs,
         );
     }
