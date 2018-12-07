@@ -423,7 +423,7 @@ sub TicketSearch {
         Queue                  => 'sq.name',
         Type                   => 'st.type_id',
         Priority               => 'st.ticket_priority_id',
-        Age                    => 'st.create_time_unix',
+        Age                    => 'st.create_time',
         Created                => 'st.create_time',
         Changed                => 'st.change_time',
         Service                => 'st.service_id',
@@ -1587,7 +1587,7 @@ sub TicketSearch {
 
     # get tickets created/escalated older/newer than x minutes
     my %TicketTime = (
-        TicketCreateTime             => 'st.create_time_unix',
+        TicketCreateTime             => 'st.create_time',
         TicketEscalationTime         => 'st.escalation_time',
         TicketEscalationUpdateTime   => 'st.escalation_update_time',
         TicketEscalationResponseTime => 'st.escalation_response_time',
@@ -2544,6 +2544,8 @@ sub TicketCountByAttribute {
         return;
     }
     my $DatabaseColumn = $AttributeToDatabase{$Attribute};
+
+    use Kernel::System::VariableCheck qw(:all);             # export all functions into the calling package
 
     # Nothing to do.
     return {} if !IsArrayRefWithData( $Param{TicketIDs} );
