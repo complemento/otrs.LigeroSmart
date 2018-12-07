@@ -5,7 +5,7 @@
     <Framework>6.0.x</Framework>
     <Vendor>Ligero</Vendor>
     <URL>http://www.complemento.net.br/</URL>
-	<PackageRequired Version="5.x.x">MultilanguageServiceCatalog</PackageRequired>
+	<PackageRequired Version="6.x.x">MultilanguageServiceCatalog</PackageRequired>
     <License>GNU GENERAL PUBLIC LICENSE Version 2, June 1991</License>
     <Description Lang="en">Ligero Smart integrates OTRS with Elasticsearch, giving to OTRS the power of Big Data tools. This package includes System/LigeroSmart.pm which provides Search::Elasticsearch functions to Index, Search and Delete documents on Elasticsearch. It also includes a Modified version of TicketSearch, which finds use fulltext search on Elasticsearch instead of Database. Includes also a GenericInterface Invoker that sends data to Elasticsearch evertime a Ticket is changed. It includes also ElasticsearchFullTicketIndexRebuild, a console script that is intend to be used once LigeroSmart is installed, in order to make a initial index of all tickets in the system.</Description>
     <Filelist>
