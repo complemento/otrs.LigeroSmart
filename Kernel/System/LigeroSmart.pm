@@ -994,19 +994,29 @@ sub FullTicketGet {
 
     # get all articles
     my @ArticleBoxRaw = $Kernel::OM->Get('Kernel::System::Ticket::Article')->ArticleList(
-        TicketID          => $Param{TicketID}  
+        TicketID          => $Param{TicketID}
     );
 
+    use strict;
+    use warnings;
+
+    use parent qw(Kernel::System::Ticket::Article::Backend::Base);
   
     if (@ArticleBoxRaw) {
         my @ArticleBox;
-        for my $ArticleRaw (@ArticleBoxRaw) {
+        for my $ArticleRawI (@ArticleBoxRaw) {
             my %Article;
             my @DynamicFields;
 
+            my %ArticleRaw = $Self->ArticleGet(
+                TicketID      => $ArticleRawI->{TicketID},
+                ArticleID     => $ArticleRawI->{ArticleID},
+                DynamicFields => 1
+            );
+
             # encode everything and remove undefined stuff
             ATTRIBUTE:
-            for my $Attribute ( sort keys %{$ArticleRaw} ) {
+            for my $Attribute ( sort keys %ArticleRaw ) {
                 $Article{$Attribute} = encode("utf-8", $ArticleRaw->{$Attribute});
                 delete $Article{$Attribute} if defined($Ticket{$Attribute});
                 delete $Article{$Attribute} unless defined($Article{$Attribute});
