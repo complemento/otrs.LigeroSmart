@@ -993,11 +993,8 @@ sub FullTicketGet {
     }
 
     # get all articles
-    my @ArticleBoxRaw = $TicketObject->ArticleGet(
-        TicketID          => $Param{TicketID},
-        DynamicFields     => 1,
-        Extended          => 1,
-        UserID            => 1,
+    my @ArticleBoxRaw = $Kernel::OM->Get('Kernel::System::Ticket::Article')->ArticleList(
+        TicketID          => $Param{TicketID}  
     );
 
   
