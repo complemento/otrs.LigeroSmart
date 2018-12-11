@@ -1017,7 +1017,7 @@ sub FullTicketGet {
             # encode everything and remove undefined stuff
             ATTRIBUTE:
             for my $Attribute ( sort keys %ArticleRaw ) {
-                $Article{$Attribute} = encode("utf-8", $ArticleRaw->{$Attribute});
+                $Article{$Attribute} = encode("utf-8", %ArticleRaw{$Attribute});
                 delete $Article{$Attribute} if defined($Ticket{$Attribute});
                 delete $Article{$Attribute} unless defined($Article{$Attribute});
             }
