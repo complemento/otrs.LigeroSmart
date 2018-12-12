@@ -997,10 +997,7 @@ sub FullTicketGet {
         TicketID          => $Param{TicketID}
     );
 
-    use strict;
-    use warnings;
-
-    use parent qw(Kernel::System::Ticket::Article::Backend::Base);
+    use Data::Dumper;
   
     if (@ArticleBoxRaw) {
         my @ArticleBox;
@@ -1008,40 +1005,42 @@ sub FullTicketGet {
             my %Article;
             my @DynamicFields;
 
-            my %ArticleRaw = $Self->ArticleGet(
-                TicketID      => $ArticleRawI->{TicketID},
-                ArticleID     => $ArticleRawI->{ArticleID},
-                DynamicFields => 1
-            );
-
+            my %ArticleRaw = $Kernel::OM->Get('Kernel::System::Ticket::Article')->BackendForArticle( %{$ArticleRawI} )->ArticleGet( %{$ArticleRawI} );
+            
             # encode everything and remove undefined stuff
             ATTRIBUTE:
-            for my $Attribute ( sort keys %ArticleRaw ) {
-                $Article{$Attribute} = encode("utf-8", %ArticleRaw{$Attribute});
+            for my $Attribute ( sort keys %ArticleRaw ) {   
+                $Article{$Attribute} = encode("utf-8", $ArticleRaw{$Attribute});
                 delete $Article{$Attribute} if defined($Ticket{$Attribute});
                 delete $Article{$Attribute} unless defined($Article{$Attribute});
             }
             
             if($Attachments eq 'Yes'){
+                $Self->{RichText} = $Kernel::OM->Get('Kernel::Config')->Get('Ticket::Frontend::ZoomRichTextForce')
+                || $Kernel::OM->Get('Kernel::Output::HTML::Layout')->{BrowserRichText}
+                || 0;
                 # get attachment index (without attachments)
-                my %AtmIndex = $TicketObject->ArticleAttachmentIndex(
+                my %AtmIndex = $Kernel::OM->Get('Kernel::System::Ticket::Article')->BackendForArticle( %{$ArticleRawI} )->ArticleAttachmentIndex(
                     ContentPath                => $Article{ContentPath},
                     ArticleID                  => $Article{ArticleID},
-                    StripPlainBodyAsAttachment => 3,
-                    Article                    => \%Article,
-                    UserID                     => 1,
+                    ExcludePlainText           => 1,
+                    ExcludeHTMLBody            => $Self->{RichText},
+                    ExcludeInline              => $Self->{RichText},
                 );
 
                 if (IsHashRefWithData( \%AtmIndex )){
                     my @Attachments;
                     ATTACHMENT:
                     for my $FileID ( sort keys %AtmIndex ) {
+                        
                         next ATTACHMENT if !$FileID;
-                        my %Attachment = $TicketObject->ArticleAttachment(
+                        my %Attachment = $Kernel::OM->Get('Kernel::System::Ticket::Article')->BackendForArticle( %{$ArticleRawI} )->ArticleAttachment(
                             ArticleID => $Article{ArticleID},
                             FileID    => $FileID,                 # as returned by ArticleAttachmentIndex
                             UserID    => 1,
                         );
+
+                        
 
                         next ATTACHMENT if !IsHashRefWithData( \%Attachment );
 
