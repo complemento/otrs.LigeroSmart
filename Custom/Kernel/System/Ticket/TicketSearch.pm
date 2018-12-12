@@ -423,7 +423,7 @@ sub TicketSearch {
         Queue                  => 'sq.name',
         Type                   => 'st.type_id',
         Priority               => 'st.ticket_priority_id',
-        Age                    => 'st.create_time_unix',
+        Age                    => 'st.create_time',
         Created                => 'st.create_time',
         Changed                => 'st.change_time',
         Service                => 'st.service_id',
@@ -1320,17 +1320,16 @@ sub TicketSearch {
     my %CustomerArticleTypes;
     my @CustomerArticleTypeIDs;
     if ( $Param{CustomerUserID} ) {
-        %CustomerArticleTypes = $Self->ArticleTypeList(
-            Result => 'HASH',
-            Type   => 'Customer',
+        my $SenderTypeID = $Kernel::OM->Get('Kernel::System::Ticket::Article')->ArticleSenderTypeLookup(
+            SenderType => 'customer', # customer|system|agent
         );
-        @CustomerArticleTypeIDs = keys %CustomerArticleTypes;
+        push @CustomerArticleTypeIDs, $SenderTypeID;
     }
 
     # restrict search from customers to only customer articles
     if ( $Param{CustomerUserID} && $ArticleIndexSQLExt ) {
         $SQLExt .= $Self->_InConditionGet(
-            TableColumn => 'art.article_type_id',
+            TableColumn => 'art.article_sender_type_id',
             IDRef       => \@CustomerArticleTypeIDs,
         );
     }
@@ -1405,6 +1404,7 @@ sub TicketSearch {
                 my $ValidateSuccess = $DynamicFieldBackendObject->ValueValidate(
                     DynamicFieldConfig => $DynamicField,
                     Value              => $Text,
+                    NoValidateRegex    => 1,
                     UserID             => $Param{UserID} || 1,
                 );
                 if ( !$ValidateSuccess ) {
@@ -1586,7 +1586,7 @@ sub TicketSearch {
 
     # get tickets created/escalated older/newer than x minutes
     my %TicketTime = (
-        TicketCreateTime             => 'st.create_time_unix',
+        TicketCreateTime             => 'st.create_time',
         TicketEscalationTime         => 'st.escalation_time',
         TicketEscalationUpdateTime   => 'st.escalation_update_time',
         TicketEscalationResponseTime => 'st.escalation_response_time',
@@ -2487,6 +2487,130 @@ sub SearchStringStopWordsUsageWarningActive {
     return 0;
 }
 
+=item TicketCountByAttribute()
+
+Returns count of tickets per value for a specific attribute.
+
+    my $TicketCount = $TicketObject->TicketCountByAttribute(
+        Attribute => 'ServiceID',
+        TicketIDs => [ 1, 2, 3 ],
+    );
+
+Returns:
+
+    $TicketCount = {
+        Attribute_Value_1 => 1,
+        Attribute_Value_2 => 3,
+        ...
+    };
+
+=cut
+
+sub TicketCountByAttribute {
+    my ( $Self, %Param ) = @_;
+
+    if ( !$Param{Attribute} ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => 'Need Attribute!',
+        );
+        return;
+    }
+
+    # Check supported attributes.
+    my $Attribute           = $Param{Attribute};
+    my %AttributeToDatabase = (
+        Lock       => 'ticket_lock_id',
+        LockID     => 'ticket_lock_id',
+        Queue      => 'queue_id',
+        QueueID    => 'queue_id',
+        Priority   => 'ticket_priority_id',
+        PriorityID => 'ticket_priority_id',
+        Service    => 'service_id',
+        ServiceID  => 'service_id',
+        SLA        => 'sla_id',
+        SLAID      => 'sla_id',
+        State      => 'ticket_state_id',
+        StateID    => 'ticket_state_id',
+        Type       => 'type_id',
+        TypeID     => 'type_id',
+    );
+    if ( !$AttributeToDatabase{$Attribute} ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "No matching database colum found for Attribute '$Attribute'!",
+        );
+        return;
+    }
+    my $DatabaseColumn = $AttributeToDatabase{$Attribute};
+
+    use Kernel::System::VariableCheck qw(:all);             # export all functions into the calling package
+
+    # Nothing to do.
+    return {} if !IsArrayRefWithData( $Param{TicketIDs} );
+    my @BindTicketIDs = map { \$_ } @{ $Param{TicketIDs} };
+
+    # Prepare value-type attributes.
+    my %AttributeValueLookup;
+    if ( $Attribute eq 'Lock' ) {
+        %AttributeValueLookup = $Kernel::OM->Get('Kernel::System::Lock')->LockList( UserID => 1 );
+    }
+    elsif ( $Attribute eq 'Queue' ) {
+        %AttributeValueLookup = $Kernel::OM->Get('Kernel::System::Queue')->QueueList( Valid => 0 );
+    }
+    elsif ( $Attribute eq 'Priority' ) {
+        %AttributeValueLookup = $Kernel::OM->Get('Kernel::System::Priority')->PriorityList( Valid => 0 );
+    }
+    elsif ( $Attribute eq 'Service' ) {
+        %AttributeValueLookup = $Kernel::OM->Get('Kernel::System::Service')->ServiceList(
+            Valid  => 0,
+            UserID => 1,
+        );
+    }
+    elsif ( $Attribute eq 'SLA' ) {
+        %AttributeValueLookup = $Kernel::OM->Get('Kernel::System::SLA')->SLAList(
+            Valid  => 0,
+            UserID => 1,
+        );
+    }
+    elsif ( $Attribute eq 'State' ) {
+        %AttributeValueLookup = $Kernel::OM->Get('Kernel::System::State')->StateList(
+            Valid  => 0,
+            UserID => 1,
+        );
+    }
+    elsif ( $Attribute eq 'Type' ) {
+        %AttributeValueLookup = $Kernel::OM->Get('Kernel::System::Type')->TypeList( Valid => 0 );
+    }
+    my $AttributeType = %AttributeValueLookup ? 'Value' : 'ID';
+
+    # Get count from database.
+    my $TicketIDString = join ',', ('?') x scalar @BindTicketIDs;
+    my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
+    return if !$DBObject->Prepare(
+        SQL =>
+            'SELECT COUNT(*), ' . $DatabaseColumn
+            . ' FROM ticket'
+            . ' WHERE id IN (' . $TicketIDString . ')'
+            . ' AND ' . $DatabaseColumn . ' IS NOT NULL'
+            . ' GROUP BY ' . $DatabaseColumn,
+        Bind  => \@BindTicketIDs,
+        Limit => 10_000,
+    );
+    my %AttributeCount;
+    while ( my @Row = $DBObject->FetchrowArray() ) {
+        $AttributeCount{ $Row[1] } = $Row[0];
+    }
+
+    # No conversion necessary.
+    return \%AttributeCount if $AttributeType eq 'ID';
+
+    # Convert database IDs to values, skip entries with unknown value lookup.
+    my %AttributeCountConverted = map { $AttributeValueLookup{$_} => $AttributeCount{$_} }
+        grep { $AttributeValueLookup{$_} } sort keys %AttributeCount;
+    return \%AttributeCountConverted;
+}
+
 =begin Internal:
 
 =cut
@@ -2557,6 +2681,129 @@ sub _InConditionGet {
         $SQL = ' AND ( ' . $SQL . ' ) ';
     }
     return $SQL;
+}
+
+sub _ArticleIndexQuerySQL {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    for (qw(Data)) {
+        if ( !$Param{$_} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Need $_!"
+            );
+            return;
+        }
+    }
+
+    # use also article table if required
+    for (
+        qw(
+        From To Cc Subject Body
+        ArticleCreateTimeOlderMinutes ArticleCreateTimeNewerMinutes
+        ArticleCreateTimeOlderDate ArticleCreateTimeNewerDate
+        )
+        )
+    {
+
+        if ( $Param{Data}->{$_} ) {
+            return ' INNER JOIN article art ON st.id = art.ticket_id ';
+        }
+    }
+
+    return '';
+}
+
+sub _ArticleIndexQuerySQLExt {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    for (qw(Data)) {
+        if ( !$Param{$_} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Need $_!"
+            );
+            return;
+        }
+    }
+
+    my %FieldSQLMapFullText = (
+        From    => 'art.a_from',
+        To      => 'art.a_to',
+        Cc      => 'art.a_cc',
+        Subject => 'art.a_subject',
+        Body    => 'art.a_body',
+    );
+
+    # get database object
+    my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
+
+    my $SQLExt      = '';
+    my $FullTextSQL = '';
+    KEY:
+    for my $Key ( sort keys %FieldSQLMapFullText ) {
+
+        next KEY if !$Param{Data}->{$Key};
+
+        # replace * by % for SQL like
+        $Param{Data}->{$Key} =~ s/\*/%/gi;
+
+        # check search attribute, we do not need to search for *
+        next KEY if $Param{Data}->{$Key} =~ /^\%{1,3}$/;
+
+        if ($FullTextSQL) {
+            $FullTextSQL .= ' ' . $Param{Data}->{ContentSearch} . ' ';
+        }
+
+        # check if search condition extension is used
+        if ( $Param{Data}->{ConditionInline} ) {
+            $FullTextSQL .= $DBObject->QueryCondition(
+                Key          => $FieldSQLMapFullText{$Key},
+                Value        => $Param{Data}->{$Key},
+                SearchPrefix => $Param{Data}->{ContentSearchPrefix},
+                SearchSuffix => $Param{Data}->{ContentSearchSuffix},
+                Extended     => 1,
+            );
+        }
+        else {
+
+            my $Field = $FieldSQLMapFullText{$Key};
+            my $Value = $Param{Data}->{$Key};
+
+            if ( $Param{Data}->{ContentSearchPrefix} ) {
+                $Value = $Param{Data}->{ContentSearchPrefix} . $Value;
+            }
+            if ( $Param{Data}->{ContentSearchSuffix} ) {
+                $Value .= $Param{Data}->{ContentSearchSuffix};
+            }
+
+            # replace %% by % for SQL
+            $Param{Data}->{$Key} =~ s/%%/%/gi;
+
+            # replace * with % (for SQL)
+            $Value =~ s/\*/%/g;
+
+            # db quote
+            $Value = $DBObject->Quote( $Value, 'Like' );
+
+            # check if database supports LIKE in large text types (in this case for body)
+            if ( !$DBObject->GetDatabaseFunction('CaseSensitive') ) {
+                $FullTextSQL .= " $Field LIKE '$Value'";
+            }
+            elsif ( $DBObject->GetDatabaseFunction('LcaseLikeInLargeText') ) {
+                $FullTextSQL .= " LCASE($Field) LIKE LCASE('$Value')";
+            }
+            else {
+                $FullTextSQL .= " LOWER($Field) LIKE LOWER('$Value')";
+            }
+        }
+    }
+    if ($FullTextSQL) {
+        $SQLExt = ' AND (' . $FullTextSQL . ')';
+    }
+    return $SQLExt;
 }
 
 1;
