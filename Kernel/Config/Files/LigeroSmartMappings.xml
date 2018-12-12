@@ -7,6 +7,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_arabic_stemmer": {
@@ -32,8 +33,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -281,6 +281,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_bulgarian_stemmer": {
@@ -306,8 +307,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -555,6 +555,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_catalan_stemmer": {
@@ -580,8 +581,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -829,6 +829,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_czech_stemmer": {
@@ -854,8 +855,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -1103,6 +1103,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_danish_stemmer": {
@@ -1128,8 +1129,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -1377,6 +1377,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_german_stemmer": {
@@ -1402,8 +1403,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -1651,6 +1651,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_english_stemmer": {
@@ -1676,8 +1677,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -1925,6 +1925,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_english_stemmer": {
@@ -1950,8 +1951,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -2199,6 +2199,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_english_stemmer": {
@@ -2224,8 +2225,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -2473,6 +2473,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_spanish_stemmer": {
@@ -2498,8 +2499,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -2747,6 +2747,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_spanish_stemmer": {
@@ -2772,8 +2773,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -3021,6 +3021,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_spanish_stemmer": {
@@ -3046,8 +3047,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -3295,6 +3295,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -3313,8 +3314,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -3562,6 +3562,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_greek_stemmer": {
@@ -3587,8 +3588,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -3836,6 +3836,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -3858,8 +3859,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -4107,6 +4107,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_finnish_stemmer": {
@@ -4132,8 +4133,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -4381,6 +4381,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_french_stemmer": {
@@ -4406,8 +4407,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -4655,6 +4655,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_french_stemmer": {
@@ -4680,8 +4681,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -4929,6 +4929,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_galician_stemmer": {
@@ -4954,8 +4955,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -5203,6 +5203,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -5221,8 +5222,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -5470,6 +5470,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_hindi_stemmer": {
@@ -5495,8 +5496,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -5744,6 +5744,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -5762,8 +5763,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -6011,6 +6011,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_hungarian_stemmer": {
@@ -6036,8 +6037,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -6285,6 +6285,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_indonesian_stemmer": {
@@ -6310,8 +6311,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -6559,6 +6559,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_italian_stemmer": {
@@ -6584,8 +6585,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -6833,6 +6833,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -6851,8 +6852,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -7100,6 +7100,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_lithuanian_stemmer": {
@@ -7121,8 +7122,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -7370,6 +7370,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_latvian_stemmer": {
@@ -7395,8 +7396,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -7644,6 +7644,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -7662,8 +7663,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -7911,6 +7911,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -7929,8 +7930,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -8178,6 +8178,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_norwegian_stemmer": {
@@ -8203,8 +8204,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -8452,6 +8452,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_brazilian_stemmer": {
@@ -8477,8 +8478,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -8726,6 +8726,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_portuguese_stemmer": {
@@ -8747,8 +8748,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -8996,6 +8996,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -9014,8 +9015,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -9263,6 +9263,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_russian_stemmer": {
@@ -9288,8 +9289,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -9537,6 +9537,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -9555,8 +9556,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -9804,6 +9804,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -9822,8 +9823,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -10071,6 +10071,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -10089,8 +10090,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -10338,6 +10338,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -10356,8 +10357,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -10605,6 +10605,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_swedish_stemmer": {
@@ -10630,8 +10631,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -10879,6 +10879,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -10897,8 +10898,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -11146,6 +11146,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -11168,8 +11169,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -11417,6 +11417,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
             "custom_turkish_stemmer": {
@@ -11442,8 +11443,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -11691,6 +11691,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -11709,8 +11710,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -11958,6 +11958,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -11976,8 +11977,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -12225,6 +12225,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -12243,8 +12244,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -12492,6 +12492,7 @@
         <Setting>
             <TextArea>{
         "settings": {
+        "index" : { "number_of_shards" : 5,  "number_of_replicas" : 1 },
         "analysis": {
           "filter": {
 
@@ -12510,8 +12511,7 @@
         }
     },
     "mappings" :  {
-        "_default_" : {
-            "_all" : {"enabled" : true, "norms": false, "type" : "text", "analyzer" : "custom_lowercase_stemmed"},
+        "doc" : {
             "dynamic_date_formats": ["yyyy-MM-dd HH:mm:ss"],
             "dynamic_templates" : [ {
              "message_field" : {
@@ -12830,7 +12830,7 @@
         "script": {
             "ignore_failure": true,
             "lang": "painless",
-            "inline": "for (Item in ctx.Attachments) { ctx.SearchBody = ctx.SearchBody + ' ' + Item.AttachmentSearch.content;}"
+            "source": "for (Item in ctx.Attachments) { ctx.SearchBody = ctx.SearchBody + ' ' + Item.AttachmentSearch.content;}"
         }
     },
     {
