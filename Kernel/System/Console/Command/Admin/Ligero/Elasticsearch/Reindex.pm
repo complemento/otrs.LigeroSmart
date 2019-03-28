@@ -90,28 +90,29 @@ sub Run {
 	
 	# for each language, call IndexCreate
 	for my $Lang (@Languages){
-		
-		# Create new indice, make alias to search and index, remove index alias of old index
-		my %Result = $Kernel::OM->Get('Kernel::System::LigeroSmart')->Reindex(
-			Index 	 => $Index,
-			Language => $Lang,
-			RequestsPerSecond => $RequestsPerSecond
-		);
-		$Self->Print("<yellow>Reindexing $Lang. Please wait Elasticsearch Task $Result{TaskID} to finish.</yellow>\n");
-		
-		# Monitor Reindex progress
-		my $NotCompleted = 1;
-		while($NotCompleted){
-			my %TaskStatus = $Kernel::OM->Get('Kernel::System::LigeroSmart')->CheckReindexStatus( EsTaskID => $Result{TaskID} );
-			$Self->Print("Progress: <yellow>$TaskStatus{Progress}%</yellow>. Reindexes documents <yellow>$TaskStatus{Created}</yellow>.\n");
-			if($TaskStatus{Completed}){
-				$NotCompleted = 0;
+		for my $Type (qw(ticket portallinks)){
+			# Create new indice, make alias to search and index, remove index alias of old index
+			my %Result = $Kernel::OM->Get('Kernel::System::LigeroSmart')->Reindex(
+				Index 	 => $Type.'_'.$Index,
+				Language => $Lang,
+				RequestsPerSecond => $RequestsPerSecond
+			);
+			$Self->Print("<yellow>Reindexing $Lang. Please wait Elasticsearch Task $Result{TaskID} to finish.</yellow>\n");
+			
+			# Monitor Reindex progress
+			my $NotCompleted = 1;
+			while($NotCompleted){
+				my %TaskStatus = $Kernel::OM->Get('Kernel::System::LigeroSmart')->CheckReindexStatus( EsTaskID => $Result{TaskID} );
+				$Self->Print("Progress: <yellow>$TaskStatus{Progress}%</yellow>. Reindexes documents <yellow>$TaskStatus{Created}</yellow>.\n");
+				if($TaskStatus{Completed}){
+					$NotCompleted = 0;
+				}
+				sleep 5;
 			}
-			sleep 5;
+			
+			# Removes Old Index
+			$Kernel::OM->Get('Kernel::System::LigeroSmart')->IndexDelete( Index => $Result{CurrentIndex} );
 		}
-		
-		# Removes Old Index
-		$Kernel::OM->Get('Kernel::System::LigeroSmart')->IndexDelete( Index => $Result{CurrentIndex} );
 
 	}
 

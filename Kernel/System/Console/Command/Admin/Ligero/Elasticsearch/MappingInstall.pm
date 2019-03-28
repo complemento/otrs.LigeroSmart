@@ -90,7 +90,12 @@ sub Run {
 	# for each language
 	for my $Lang (@Languages){
 		my $Result = $Kernel::OM->Get('Kernel::System::LigeroSmart')->IndexCreate(
-			Index 	 => $Index,
+			Index 	 => 'ticket_'.$Index,
+			Language => $Lang
+		);
+		$Self->Print("<yellow>Index created: $Result</yellow>\n");
+		my $Result = $Kernel::OM->Get('Kernel::System::LigeroSmart')->IndexCreate(
+			Index 	 => 'portallinks_'.$Index,
 			Language => $Lang
 		);
 		$Self->Print("<yellow>Index created: $Result</yellow>\n");

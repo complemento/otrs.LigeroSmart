@@ -97,7 +97,7 @@ sub PrepareRequest {
                                                                     Attachments =>  $Config->{SendAttachmentsToES}||'Yes'
                                                                 );
 
-	my $Index = $Kernel::OM->Get('Kernel::Config')->Get('LigeroSmart::Index');
+	my $Index = 'ticket_'.$Kernel::OM->Get('Kernel::Config')->Get('LigeroSmart::Index');
 	$Index .= "_";
 
 	my %QueuePreferences = $Kernel::OM->Get('Kernel::System::Queue')->QueuePreferencesGet(

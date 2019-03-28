@@ -160,8 +160,8 @@ sub Search {
     
     try {
         @SearchResults = $e->search(
-            'index' => $Indexes,
-            'type'  => $Types,
+            'index' => $Types.'_'.$Indexes,
+            'type'  => 'doc',
             'body'  => {
                 %{$Param{Data}}
             }
@@ -210,8 +210,8 @@ sub SearchTemplate {
     
     try {
         @SearchResults = $e->search_template(
-            'index' => $Indexes,
-            'type'  => $Types,
+            'index' => $Types.'_'.$Indexes,
+            'type'  => 'doc',
             'body'  => {
                 %{$Param{Data}}
             }
@@ -300,8 +300,8 @@ sub DeleteByQuery {
     my $DeletedInformation;
     
     $DeletedInformation = $e->delete_by_query(
-            'index' => $Indexes,
-            'type'  => $Types,
+            'index' => $Types.'_'.$Indexes,
+            'type'  => 'doc',
             'body'  => {
                 %{$Param{Body}}
             }
@@ -317,7 +317,7 @@ sub DeleteByQuery {
 Index documents on Elasticsearch
 
     my @Results = $LigeroSmartObject->Index(
-        Index   => 'otrs', # Optional
+        Index   => 'ligero', # Optional
         Type    => 'servicecatalogsearch',          # Optional
         Id      => 'service-xxx' # ID for this object on elasticsearch
         Body    => @$%           # Encoded perl data structure reference which will be used as document body
@@ -378,8 +378,8 @@ sub Index {
     
 #    try {
     $Result = $e->index(
-        'index'    => $Index,
-        'type'     => $Type,
+        'index'    => $Type.'_'.$Index,
+        'type'     => 'doc',
         'id'       => $Id,
         'body'     => {
             %{$Body}
@@ -394,7 +394,7 @@ sub Index {
 Create a new Index on Elasticsearch
 
     my $Result  = $LigeroSmartObject->IndexCreate(
-        Index   => 'otrs',   # Required
+        Index   => 'ligero',   # Required
         Language => 'pt_BR', # Required
         Body    => @$%       # Required Encoded perl data structure reference which will be used as document body (settings, analyser, mapping)
     );
@@ -456,7 +456,7 @@ sub IndexCreate {
 	my $SearchAlias = lc($IndexPrefix . "_" . $Language. "_search");
 	my $IndexAlias  = lc($IndexPrefix . "_" . $Language. "_index");
 
-	# create json object - We cannot use OTRS Json object directly because it sanitize true and false and we get errors from elasticsearch
+	# create json object - We cannot use LIGERO Json object directly because it sanitize true and false and we get errors from elasticsearch
 	my $JSONObject = JSON->new();
 	$JSONObject->allow_nonref(1);
 
@@ -622,7 +622,7 @@ sub IngestPipelineInstall {
         (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
     );    
     
-	# create json object - We cannot use OTRS Json object directly because it sanitize true and false and we get errors from elasticsearch
+	# create json object - We cannot use LIGERO Json object directly because it sanitize true and false and we get errors from elasticsearch
 	my $JSONObject = JSON->new();
 	$JSONObject->allow_nonref(1);
 
@@ -687,7 +687,7 @@ Create a new Index on Elasticsearch for a specific language, copy all content of
 recreate links and delete old Index
 
     my $Result  = $LigeroSmartObject->Reindex(
-        Index   => 'otrs',   # Required
+        Index   => 'ligero',   # Required
         Language => 'pt_BR', # Required
         RequestsPerSecond => 50
     );
