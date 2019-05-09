@@ -87,4 +87,15 @@
 			</Item>
 		</Value>
 	</Setting>
+    <Setting Name="GenericInterface::Operation::Module###LigeroSmart::Search" Required="0" Valid="1">
+        <Description Translatable="1">GenericInterface module registration for the operation layer.</Description>
+        <Navigation>GenericInterface::Operation::ModuleRegistration</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Name">Search</Item>
+                <Item Key="Controller">LigeroSmart</Item>
+                <Item Key="ConfigDialog">AdminGenericInterfaceOperationDefault</Item>
+            </Hash>
+        </Value>
+    </Setting>
  </otrs_config>

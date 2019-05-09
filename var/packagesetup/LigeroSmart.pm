@@ -184,7 +184,7 @@ sub _CreateWebServices {
     #Verify if it already exists
     my $List             = $Kernel::OM->Get('Kernel::System::GenericInterface::Webservice')->WebserviceList();
     my %WebServiceLookup = reverse %{$List};
-    my $Name = 'LigeroTicketIndexer';
+    my $Name = 'LigeroSmart';
     if ( $WebServiceLookup{$Name} ) {
         return 1;
     }
@@ -196,11 +196,68 @@ Debugger:
   DebugThreshold: error
   TestMode: '0'
 Description: ''
-FrameworkVersion: 5.0.7
+FrameworkVersion: 6.0.18
 Provider:
-  Operation: {}
+  Operation:
+    Search:
+      Description: ''
+      IncludeTicketData: '0'
+      MappingInbound:
+        Config:
+          DataInclude: []
+          PostRegExFilter: ~
+          PostRegExValueCounter: ~
+          PreRegExFilter: ~
+          PreRegExValueCounter: ~
+          Template: "<xsl:stylesheet version=\\"1.0\\"\\r\\n                xmlns:xsl=\\"http://www.w3.org/1999/XSL/Transform\\">\\r\\n
+            \\   <xsl:output omit-xml-declaration=\\"yes\\" indent=\\"yes\\"/>\\r\\n    <xsl:template
+            match=\\"RootElement\\">\\r\\n        <xsl:copy>\\r\\n             <xsl:apply-templates
+            select=\\"//SessionID\\"/>\\r\\n             <xsl:apply-templates select=\\"//UserLogin\\"/>\\r\\n
+            \\            <xsl:apply-templates select=\\"//Password\\"/>\\r\\n            <params>\\r\\n
+            \\               <Query>\\r\\n                  <xsl:value-of select=\\"//Query\\"
+            />\\r\\n                </Query>\\r\\n                <KBs>FAQ-Misc</KBs>\\r\\n
+            \\               <KBs>FAQ-IT Service</KBs>\\r\\n                <KBs>MicrosoftSupport</KBs>\\r\\n
+            \\               <xsl:apply-templates select=\\"//Language\\"/>\\r\\n            </params>\\r\\n
+            \\           <source>\\r\\n                <size>1</size>\\r\\n                <from>0</from>\\r\\n
+            \\               <_source>Title</_source>\\r\\n                <_source>Description</_source>\\r\\n
+            \\               <_source>URL</_source>\\r\\n                <query>\\r\\n
+            \\                   <bool>\\r\\n                        <must>\\r\\n                            <terms>\\r\\n
+            \\                               <Object.raw>{{#KBs}}</Object.raw>\\r\\n
+            \\                               <Object.raw>{{.}}</Object.raw>\\r\\n                                <Object.raw>{{/KBs}}</Object.raw>\\r\\n
+            \\                           </terms>\\r\\n                        </must>\\r\\n
+            \\                       <should>\\r\\n                            <prefix>\\r\\n
+            \\                               <Title>\\r\\n                                    <value>{{Query}}</value>\\r\\n
+            \\                                   <boost>20</boost>\\r\\n                                </Title>\\r\\n
+            \\                           </prefix>\\r\\n                        </should>\\r\\n
+            \\                       <should>\\r\\n                            <match>\\r\\n
+            \\                               <Title>\\r\\n                                    <query>{{Query}}</query>\\r\\n
+            \\                                   <boost>10</boost>\\r\\n                                </Title>\\r\\n
+            \\                           </match>\\r\\n                        </should>\\r\\n
+            \\                       <should>\\r\\n                            <match>\\r\\n
+            \\                               <SearchBody>{{Query}}</SearchBody>\\r\\n
+            \\                           </match>\\r\\n                        </should>\\r\\n
+            \\                   </bool>\\r\\n                </query>\\r\\n            </source>\\r\\n
+            \\       </xsl:copy>\\r\\n    </xsl:template>\\r\\n            <xsl:template
+            match=\\"//SessionID\\">\\r\\n                <SessionID>\\r\\n                    <xsl:value-of
+            select=\\"//SessionID\\" />\\r\\n                </SessionID>\\r\\n            </xsl:template>\\r\\n
+            \\           <xsl:template match=\\"//UserLogin\\">\\r\\n                <UserLogin>\\r\\n
+            \\                   <xsl:value-of select=\\"//UserLogin\\" />\\r\\n                </UserLogin>\\r\\n
+            \\           </xsl:template>\\r\\n            <xsl:template match=\\"//Password\\">\\r\\n
+            \\               <Password>\\r\\n                    <xsl:value-of select=\\"//Password\\"
+            />\\r\\n                </Password>\\r\\n            </xsl:template>\\r\\n            <xsl:template
+            match=\\"//Language\\">\\r\\n                <Language>\\r\\n                    <xsl:value-of
+            select=\\"//Language\\" />\\r\\n                </Language>\\r\\n            </xsl:template>\\r\\n</xsl:stylesheet>"
+        Type: XSLT
+      Type: LigeroSmart::Search
   Transport:
-    Type: ''
+    Config:
+      AdditionalHeaders: ~
+      KeepAlive: ''
+      MaxLength: '9999999999'
+      RouteOperationMapping:
+        Search:
+          Route: /Search
+    Type: HTTP::REST
 RemoteSystem: ''
 Requester:
   Invoker:
@@ -223,11 +280,16 @@ Requester:
   Transport:
     Config:
       DefaultCommand: PUT
-      Host: http://localhost:9200
+      Host: http://elasticsearch:9200
       InvokerControllerMapping:
         LigeroTicketIndexer:
           Command: PUT
           Controller: /:Index/doc/:TicketID?pipeline=:pipeline
+      Proxy:
+        UseProxy: No
+      SSL:
+        UseSSL: No
+      Timeout: '300'
     Type: HTTP::REST
 _END_
 
@@ -235,7 +297,7 @@ _END_
 
     # add new web service
     my $ID = $Kernel::OM->Get('Kernel::System::GenericInterface::Webservice')->WebserviceAdd(
-        Name    => 'LigeroTicketIndexer',
+        Name    => 'LigeroSmart',
         Config  => $Config,
         ValidID => 1,
         UserID  => 1,

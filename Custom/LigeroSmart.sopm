@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <otrs_package version="1.0">
     <Name>LigeroSmart</Name>
-    <Version>6.0.3</Version>
+    <Version>6.1.0</Version>
     <Framework>6.0.x</Framework>
     <Vendor>Ligero</Vendor>
     <URL>http://www.complemento.net.br/</URL>
@@ -20,7 +20,7 @@
 		<File Permission="644" Location="Kernel/System/Console/Command/Admin/Ligero/Elasticsearch/MappingInstall.pm"></File>
         <File Permission="644" Location="Kernel/System/Console/Command/Admin/Ligero/Elasticsearch/Reindex.pm"></File>
         <File Permission="644" Location="Kernel/Config/Files/XML/LigeroSmartMappings.xml"></File>
-        
+        <File Permission="644" Location="Kernel/GenericInterface/Operation/LigeroSmart/Search.pm"></File>
     </Filelist>
 	<CodeInstall Type="post">
         my $CodeModule = 'var::packagesetup::' . $Param{Structure}-&gt;{Name}-&gt;{Content};
