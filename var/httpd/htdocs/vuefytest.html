@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="./skins/Agent/default/thirdparty/vuefy/css/googleapis.css" rel="stylesheet">
+  <link href="./skins/Agent/default/thirdparty/vuefy/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="./skins/Agent/default/thirdparty/vuefy/css/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+  <div id="app">
+  </div>
+
+  <script src="./js/thirdparty/vuefy/vue.js"></script>
+  <script src="./js/thirdparty/vuefy/vuetify.js"></script>
+  <script type="text/x-template" id="app-template">
+    <v-app>
+        <div>
+            <v-alert type="success">
+                I'm a success alert.
+            </v-alert>
+        
+            <v-alert type="info">
+                I'm an info alert.
+            </v-alert>
+        
+            <v-alert type="warning">
+                I'm a warning alert.
+            </v-alert>
+        
+            <v-alert type="error">
+                I'm an error alert.
+            </v-alert>
+        </div>
+        <v-card
+    color="grey lighten-4"
+    flat
+    height="200px"
+    tile
+  >
+    <v-toolbar prominent extended>
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Title</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+    </v-toolbar>
+  </v-card>
+      <v-container>
+        <!---->STST
+      </v-container>
+    </v-app>
+  </script>
+  <script>
+    const App = {
+        template: '#app-template',
+        data: () => ({
+            //
+        })
+    }
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      render: h => h(App)
+    }).$mount('#app')
+  </script>
+</body>
+</html>
