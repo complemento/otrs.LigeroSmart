@@ -5,9 +5,7 @@
         <Navigation>Frontend::Base::Loader</Navigation>
         <Value>
             <Array>
-                <Item>thirdparty/vuetify/css/googleapis.css</Item>
-                <Item>thirdparty/vuetify/css/materialdesignicons.min.css</Item>
-                <Item>thirdparty/vuetify/css/vuetify.min.css</Item>
+                <Item>thirdparty/vuetify/css/vuetify-iso.css</Item>
             </Array>
         </Value>
     </Setting>
@@ -16,9 +14,7 @@
         <Navigation>Frontend::Base::Loader</Navigation>
         <Value>
             <Array>
-                <Item>thirdparty/vuetify/css/googleapis.css</Item>
-                <Item>thirdparty/vuetify/css/materialdesignicons.min.css</Item>
-                <Item>thirdparty/vuetify/css/vuetify.min.css</Item>
+                <Item>thirdparty/vuetify/css/vuetify-iso.css</Item>
             </Array>
         </Value>
     </Setting>
