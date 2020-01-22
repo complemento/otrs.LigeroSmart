@@ -1,0 +1,33 @@
+<div class="vuetify-iso">
+  <div id="app" raised>
+    <v-app>
+        <v-content>
+            <v-card>
+                <v-card-title>Integrações Ligero</v-card-title>
+                <v-container>
+                    <v-row>
+                        <v-col>
+                            <v-data-table
+                                :headers="headers"
+                                :items="desserts"
+                                :items-per-page="5"
+                                class="elevation-1"
+                            >
+                                <template v-slot:item.status="{ item }">
+                                    <v-switch
+                                    ></v-switch>
+                                </template>
+                                <template v-slot:item.action="{ item }">
+                                    <v-btn color="secondary" fab x-small dark>
+                                        <v-icon>mdi-settings</v-icon>
+                                    </v-btn>
+                                </template>
+                            </v-data-table>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-card>
+        </v-content>
+    </v-app>
+  </div>
+</div>
