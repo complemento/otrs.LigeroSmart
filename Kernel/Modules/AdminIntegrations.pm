@@ -25,11 +25,36 @@ sub Run {
     my ( $Self, %Param ) = @_;
     my $ParamObject = $Kernel::OM->Get('Kernel::System::Web::Request');
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
-    $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => 'error',
-                Message  => "-----------------------",
-            );
+    # ------------------------------------------------------------ #
+    # change
+    # ------------------------------------------------------------ #
+    if ( $Self->{Subaction} eq 'GetIntegrationList' ) {
+        my %Integrations = %{ $ConfigObject->Get('Ligero::Integrations') };
+
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "Integration List ",
+
+        );
+        my @ArrayIntegrations = ();
+        while ((my $key, my $value) = each (%Integrations))
+        {
+            push @ArrayIntegrations, $value;
+        }
+
+        my $JSON = $LayoutObject->JSONEncode(
+            Data => \@ArrayIntegrations,
+        );
+
+        return $LayoutObject->Attachment(
+            ContentType => 'application/json; charset=utf8',
+            Content     => $JSON || '',
+            Type        => 'inline',
+            NoCache     => 1,
+        );
+    }
 
     # ------------------------------------------------------------ #
     # change

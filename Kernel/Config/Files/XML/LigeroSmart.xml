@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <otrs_config version="2.0" init="Application">
+    <Setting Name="Ligero::Integrations###ExampleIntegration1" Required="0" Valid="1">
+        <Description Translatable="1">Example Integration By Ligero 1</Description>
+        <Navigation>Ligero::Integrations</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Title">Example Integration By Ligero 1</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Ligero::Integrations###ExampleIntegration2" Required="0" Valid="1">
+        <Description Translatable="1">Example Integration By Ligero 2</Description>
+        <Navigation>Ligero::Integrations</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Title">Example Integration By Ligero 2</Item>
+            </Hash>
+        </Value>
+    </Setting>
     <Setting Name="Loader::Agent::CommonCSS###998-Vuetify" Required="1" Valid="1">
         <Description Translatable="1">Vuetify</Description>
         <Navigation>Frontend::Base::Loader</Navigation>
