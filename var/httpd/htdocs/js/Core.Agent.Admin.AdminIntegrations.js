@@ -12,7 +12,7 @@ new Vue({
       return {
         headers:[
             {
-                text: 'Integração',
+                text: 'Integrações',
                 align: 'left',
                 sortable: false,
                 value: 'Title',
@@ -20,14 +20,21 @@ new Vue({
               { text: 'Status', value: 'status', sortable: false },
               { text: 'Action', value: 'action', sortable: false },
         ],
-        integrations: []
+        integrations: [],
+        cards: [
+          { title: 'Pre-fab homes', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 3 },
+          { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 3 },
+          { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 3 },
+          { title: 'Best airlines 2', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 3 },
+        ]
     }},
     watch: {
       options: {
         handler () {
           this.getDataFromApi()
             .then(data => {
-              this.integrations = data
+              this.integrations = data;
+              this.cards = data;
             })
         },
         deep: true,
@@ -36,7 +43,8 @@ new Vue({
     mounted () {
       this.getDataFromApi()
         .then(data => {
-          this.integrations = data
+          this.integrations = data;
+          this.cards = data;
         })
     },
     methods: {

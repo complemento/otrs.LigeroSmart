@@ -41,6 +41,10 @@ sub Run {
         my @ArrayIntegrations = ();
         while ((my $key, my $value) = each (%Integrations))
         {
+            $value->{title} = $value->{Title};
+            $value->{src} = 'https://cdn.vuetifyjs.com/images/cards/house.jpg';
+            $value->{flex} = 3;
+
             push @ArrayIntegrations, $value;
         }
 
