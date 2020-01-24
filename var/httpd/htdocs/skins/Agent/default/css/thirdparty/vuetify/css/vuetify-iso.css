@@ -17255,7 +17255,7 @@
   color: transparent!important;
   caret-color: transparent !important;
 }
-.vuetify-iso html {
+.vuetify-iso {
   box-sizing: border-box;
   overflow-y: scroll;
   -webkit-text-size-adjust: 100%;
@@ -17401,7 +17401,7 @@
 .vuetify-iso [type=reset],
 .vuetify-iso [type=submit],
 .vuetify-iso button,
-.vuetify-iso html [type=button] {
+.vuetify-iso [type=button] {
   -webkit-appearance: button;
 }
 .vuetify-iso button,
@@ -17893,7 +17893,7 @@
   background: #616161;
   color: #fff;
 }
-.vuetify-iso html {
+.vuetify-iso {
   font-size: 16px;
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
@@ -17901,7 +17901,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-.vuetify-iso html.overflow-y-hidden {
+.vuetify-iso .overflow-y-hidden {
   overflow-y: hidden !important;
 }
 .vuetify-iso .v-application {

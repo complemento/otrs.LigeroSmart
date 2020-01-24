@@ -1,10 +1,10 @@
 <div class="vuetify-iso">
   <div id="app" raised>
     <v-app>
-        <v-content>
+        <v-content fluid>
             <v-card>
                 <v-card-title>Integrações Ligero</v-card-title>
-                <v-container>
+                <v-container fluid>
                     <v-row>
                         <v-col>
                             <v-data-table
@@ -23,6 +23,37 @@
                                     </v-btn>
                                 </template>
                             </v-data-table>
+                        </v-col>
+                    </v-row>
+                </v-container>
+                <v-container fluid>
+                    <v-row dense>
+                        <v-col
+                        v-for="card in cards"
+                        :key="card.title"
+                        :cols="card.flex"
+                        >
+                        <v-card>
+                            <v-img
+                            :src="card.src"
+                            class="white--text align-end"
+                            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                            height="200px"
+                            >
+                            <v-card-title v-text="card.title"></v-card-title>
+                            </v-img>
+
+                            <v-card-actions>
+                            <v-spacer></v-spacer>
+
+                            <v-switch
+                            ></v-switch>
+
+                            <v-btn icon>
+                                <v-icon>mdi-settings</v-icon>
+                            </v-btn>
+                            </v-card-actions>
+                        </v-card>
                         </v-col>
                     </v-row>
                 </v-container>

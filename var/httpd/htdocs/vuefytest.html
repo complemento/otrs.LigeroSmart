@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href="./skins/Agent/default/css/thirdparty/vuetify/css/vuetify-iso.css" rel="stylesheet">
+  <link href="./skins/Agent/default/css/thirdparty/vuetify/css/vuetify.min.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 <body class="vuetify-iso">
@@ -11,60 +11,85 @@
   <script src="./js/thirdparty/vuetify/vue.js"></script>
   <script src="./js/thirdparty/vuetify/vuetify.js"></script>
   <script type="text/x-template" id="app-template">
-    <v-app>
-        <div>
-            <v-alert type="success">
-                I'm a success alert.
-            </v-alert>
-        
-            <v-alert type="info">
-                I'm an info alert.
-            </v-alert>
-        
-            <v-alert type="warning">
-                I'm a warning alert.
-            </v-alert>
-        
-            <v-alert type="error">
-                I'm an error alert.
-            </v-alert>
-        </div>
-        <v-card
-    color="grey lighten-4"
-    flat
-    height="200px"
-    tile
+    <v-card
+    class="mx-auto"
+    max-width="500"
   >
-    <v-toolbar prominent extended>
+    <v-system-bar
+      color="indigo darken-2"
+      dark
+    >
+      <v-spacer></v-spacer>
+
+      <v-icon>mdi-window-minimize</v-icon>
+
+      <v-icon>mdi-window-maximize</v-icon>
+
+      <v-icon>mdi-close</v-icon>
+    </v-system-bar>
+
+    <v-toolbar
+      color="indigo"
+      dark
+    >
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Title</v-toolbar-title>
+      <v-toolbar-title>Discover</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
       <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
     </v-toolbar>
+
+    <v-container fluid>
+      <v-row dense>
+        <v-col
+          v-for="card in cards"
+          :key="card.title"
+          :cols="card.flex"
+        >
+          <v-card>
+            <v-img
+              :src="card.src"
+              class="white--text align-end"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+              height="200px"
+            >
+              <v-card-title v-text="card.title"></v-card-title>
+            </v-img>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn icon>
+                <v-icon>mdi-heart</v-icon>
+              </v-btn>
+
+              <v-btn icon>
+                <v-icon>mdi-bookmark</v-icon>
+              </v-btn>
+
+              <v-btn icon>
+                <v-icon>mdi-share-variant</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-card>
-      <v-container>
-        <!---->STST
-      </v-container>
-    </v-app>
   </script>
   <script>
     const App = {
         template: '#app-template',
         data: () => ({
-            //
+          cards: [
+            { title: 'Pre-fab homes', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 12 },
+            { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
+            { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
+          ],
         })
     }
     new Vue({
