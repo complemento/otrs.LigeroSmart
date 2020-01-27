@@ -1,40 +1,38 @@
 "use strict";
 
+
+
 var Core = Core || {};
 Core.Agent = Core.Agent || {};
 Core.Agent.Admin = Core.Agent.Admin || {};
 
-new Vue({
+Vue.component('component-a', { template: '<p>AAAA</p>' })
+
+
+Core.Vue = new Vue({
     el: '#app',
     vuetify: new Vuetify(),
     data: () => {
       
       return {
-        headers:[
-            {
-                text: 'Integrações',
-                align: 'left',
-                sortable: false,
-                value: 'Title',
-              },
-              { text: 'Status', value: 'status', sortable: false },
-              { text: 'Action', value: 'action', sortable: false },
-        ],
-        integrations: [],
-        cards: [
-          { title: 'Pre-fab homes', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 3 },
-          { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 3 },
-          { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 3 },
-          { title: 'Best airlines 2', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 3 },
-        ]
+        dialog: false,  
+        cards: [],
+        integrationName: "",
+        component: 'component-a'
     }},
     watch: {
       options: {
         handler () {
           this.getDataFromApi()
             .then(data => {
-              this.integrations = data;
               this.cards = data;
+              for (const a of this.cards) {
+                Vue.component(a.IntegrationId, { template: a.Template, data () {
+                  return {
+                    e6: 1,
+                  }
+                }, });
+              }
             })
         },
         deep: true,
@@ -43,8 +41,15 @@ new Vue({
     mounted () {
       this.getDataFromApi()
         .then(data => {
-          this.integrations = data;
           this.cards = data;
+          for (const a of this.cards) {
+            Vue.component(a.IntegrationId, { template: a.Template, data () {
+      return {
+        e6: 1,
+      }
+    }, });
+          }
+          
         })
     },
     methods: {
@@ -63,6 +68,14 @@ new Vue({
             )
           });
         });
+      },
+      openConfiguration (IntegrationId) {
+        if(IntegrationId == undefined){
+          this.component = 'component-a'
+        } else {
+          this.component = IntegrationId
+        }
       }
     }
 })
+
