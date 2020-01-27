@@ -5,32 +5,10 @@
             <v-card>
                 <v-card-title>Integrações Ligero</v-card-title>
                 <v-container fluid>
-                    <v-row>
-                        <v-col>
-                            <v-data-table
-                                :headers="headers"
-                                :items="integrations"
-                                :items-per-page="5"
-                                class="elevation-1"
-                            >
-                                <template v-slot:item.status="{ item }">
-                                    <v-switch
-                                    ></v-switch>
-                                </template>
-                                <template v-slot:item.action="{ item }">
-                                    <v-btn color="secondary" fab x-small dark>
-                                        <v-icon>mdi-settings</v-icon>
-                                    </v-btn>
-                                </template>
-                            </v-data-table>
-                        </v-col>
-                    </v-row>
-                </v-container>
-                <v-container fluid>
                     <v-row dense>
                         <v-col
                         v-for="card in cards"
-                        :key="card.title"
+                        :key="card.IntegrationId"
                         :cols="card.flex"
                         >
                         <v-card>
@@ -40,7 +18,7 @@
                             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                             height="200px"
                             >
-                            <v-card-title v-text="card.title"></v-card-title>
+                            <v-card-title v-text="card.Title"></v-card-title>
                             </v-img>
 
                             <v-card-actions>
@@ -49,7 +27,7 @@
                             <v-switch
                             ></v-switch>
 
-                            <v-btn icon>
+                            <v-btn icon @click="dialog = true; integrationName = card.Title; openConfiguration(card.IntegrationId);">
                                 <v-icon>mdi-settings</v-icon>
                             </v-btn>
                             </v-card-actions>
@@ -59,6 +37,38 @@
                 </v-container>
             </v-card>
         </v-content>
+        <v-dialog
+        v-model="dialog"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
+        scrollable
+      >
+        <v-card tile>
+          <v-toolbar
+            flat
+            dark
+            color="primary"
+          >
+            <v-btn
+              icon
+              dark
+              @click="dialog = false"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-toolbar-title>Configure {{integrationName}}</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+            </v-toolbar-items>
+          </v-toolbar>
+          <v-card-text>
+            <component v-bind:is="component" />
+          </v-card-text>
+
+          <div style="flex: 1 1 auto;"></div>
+        </v-card>
+      </v-dialog>
     </v-app>
   </div>
 </div>

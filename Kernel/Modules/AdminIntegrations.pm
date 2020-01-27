@@ -38,13 +38,15 @@ sub Run {
             Message  => "Integration List ",
 
         );
+
         my @ArrayIntegrations = ();
         while ((my $key, my $value) = each (%Integrations))
         {
-            $value->{title} = $value->{Title};
-            $value->{src} = 'https://cdn.vuetifyjs.com/images/cards/house.jpg';
+            $value->{src} = 'https://blog.wildix.com/wp-content/uploads/2018/09/Determining-Integration-Requirements.png';
             $value->{flex} = 3;
-
+            $value->{Template} = $LayoutObject->Output(
+                TemplateFile => 'Vue/Integrations/'.$value->{Template}
+            );
             push @ArrayIntegrations, $value;
         }
 
@@ -55,6 +57,48 @@ sub Run {
         return $LayoutObject->Attachment(
             ContentType => 'application/json; charset=utf8',
             Content     => $JSON || '',
+            Type        => 'inline',
+            NoCache     => 1,
+        );
+    }
+
+    # ------------------------------------------------------------ #
+    # change
+    # ------------------------------------------------------------ #
+    if ( $Self->{Subaction} eq 'GetConfigScreen' ) {
+        #my $ID = $ParamObject->GetParam( Param => 'ID' ) || '';
+
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "CHEGOU AQUI ",
+
+        );
+
+        my $Output .= $LayoutObject->Output(
+            TemplateFile => 'Teste1'
+        );
+
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "CHEGOU AQUI 2 ".$Output,
+
+        );
+
+        use Data::Dumper;
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "CHEGOU AQUI 3 ".Dumper($LayoutObject->Attachment(
+            ContentType => 'text/html; charset=' . $LayoutObject->{Charset},
+            Content     => $Output,
+            Type        => 'inline',
+            NoCache     => 1,
+        )),
+
+        );
+
+        return $LayoutObject->Attachment(
+            ContentType => 'text/html; charset=' . $LayoutObject->{Charset},
+            Content     => $Output,
             Type        => 'inline',
             NoCache     => 1,
         );

@@ -5,7 +5,9 @@
         <Navigation>Ligero::Integrations</Navigation>
         <Value>
             <Hash>
+                <Item Key="IntegrationId">example1</Item>
                 <Item Key="Title">Example Integration By Ligero 1</Item>
+                <Item Key="Template">Example1</Item>
             </Hash>
         </Value>
     </Setting>
@@ -14,7 +16,9 @@
         <Navigation>Ligero::Integrations</Navigation>
         <Value>
             <Hash>
+                <Item Key="IntegrationId">example2</Item>
                 <Item Key="Title">Example Integration By Ligero 2</Item>
+                <Item Key="Template">Example2</Item>
             </Hash>
         </Value>
     </Setting>
