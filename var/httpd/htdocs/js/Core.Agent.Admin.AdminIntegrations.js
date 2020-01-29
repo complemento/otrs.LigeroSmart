@@ -18,20 +18,37 @@ Core.Vue = new Vue({
         dialog: false,  
         cards: [],
         integrationName: "",
-        component: 'component-a'
+        component: 'component-a',
+        updating: false,
+        snackbar: false,
+        text: '',
     }},
     watch: {
       options: {
         handler () {
+          this.updating = true;
           this.getDataFromApi()
             .then(data => {
               this.cards = data;
+              this.updating = false;
               for (const a of this.cards) {
-                Vue.component(a.IntegrationId, { template: a.Template, data () {
-                  return {
-                    e6: 1,
-                  }
-                }, });
+                this.updating = true;
+                a.TemplateData.then(val =>{
+                  this.updating = false;
+                  a.Enable = val.Enable;
+                  Vue.component(a.IntegrationId, 
+                    { 
+                      template: val.Template, 
+                      data () {
+                        return val.DataStructure
+                      },
+                      methods: {
+                        doConfigure(){
+                          console.log("Cliquei no configure")
+                        }
+                      } 
+                    });
+                });
               }
             })
         },
@@ -39,17 +56,30 @@ Core.Vue = new Vue({
       },
     },
     mounted () {
+      this.updating = true;
       this.getDataFromApi()
         .then(data => {
           this.cards = data;
+          this.updating = false;
           for (const a of this.cards) {
-            Vue.component(a.IntegrationId, { template: a.Template, data () {
-      return {
-        e6: 1,
-      }
-    }, });
+            this.updating = true;
+            a.TemplateData.then(val =>{
+              this.updating = false;
+              a.Enable = val.Enable;
+              Vue.component(a.IntegrationId, 
+                { 
+                  template: val.Template, 
+                  data () {
+                    return val.DataStructure
+                  },
+                  methods: {
+                    doConfigure(){
+                      console.log("Cliquei no configure")
+                    }
+                  } 
+                });
+            });
           }
-          
         })
     },
     methods: {
@@ -59,10 +89,22 @@ Core.Vue = new Vue({
             Action: 'AdminIntegrations',
             Subaction: 'GetIntegrationList'
           };
-    
-          console.log("Core",Core);
-    
+
           Core.AJAX.FunctionCall(Core.Config.Get('CGIHandle'), Data, function (Response) {
+            for (const integration of Response) {
+              Data = {
+                Action: integration.Module,
+                Subaction: 'GetTemplateData'
+              };
+              integration.TemplateData = new Promise((resolve, reject) => {
+                Core.AJAX.FunctionCall(Core.Config.Get('CGIHandle'), Data, function (Response) {
+                  resolve(
+                    Response
+                  )
+                })
+              });
+              
+            }
             resolve(
               Response
             )
@@ -75,6 +117,32 @@ Core.Vue = new Vue({
         } else {
           this.component = IntegrationId
         }
+      },
+      doActivate(card){
+        this.updating = true;
+
+        var Data = {
+          Action: card.Module,
+          Subaction: 'SetEnable',
+          Value: card.Enable? "1": "0"
+        };
+
+        new Promise((resolve, reject) => {
+          Core.AJAX.FunctionCall(Core.Config.Get('CGIHandle'), Data, function (Response) {
+            resolve(Response)
+          });
+        }).then(value => {
+          this.snackbar = true;
+          if(value == 1){
+            this.text = "Save with success";
+          } else {
+            this.text = "Fail to save";
+          }
+          this.updating = false;
+        });
+        
+        
+        console.log(card);
       }
     }
 })

@@ -21,16 +21,32 @@
                             <v-card-title v-text="card.Title"></v-card-title>
                             </v-img>
 
-                            <v-card-actions>
+                            <v-card-actions v-if="!updating">
                             <v-spacer></v-spacer>
 
-                            <v-switch
+                            <v-switch v-model="card.Enable"
+                            @change="doActivate(card)"
                             ></v-switch>
 
                             <v-btn icon @click="dialog = true; integrationName = card.Title; openConfiguration(card.IntegrationId);">
                                 <v-icon>mdi-settings</v-icon>
                             </v-btn>
                             </v-card-actions>
+                            <v-container v-if="updating" style="height: 82px;">
+                              <v-row
+                                align-content="center"
+                                justify="center"
+                              >
+                                <v-col cols="6">
+                                  <v-progress-linear
+                                    color="deep-purple accent-4"
+                                    indeterminate
+                                    rounded
+                                    height="6"
+                                  ></v-progress-linear>
+                                </v-col>
+                              </v-row>
+                            </v-container>
                         </v-card>
                         </v-col>
                     </v-row>
@@ -69,6 +85,18 @@
           <div style="flex: 1 1 auto;"></div>
         </v-card>
       </v-dialog>
+      <v-snackbar
+        v-model="snackbar"
+      >
+        {{ text }}
+        <v-btn
+          color="pink"
+          text
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </v-snackbar>
     </v-app>
   </div>
 </div>
