@@ -7,8 +7,26 @@
             <Hash>
                 <Item Key="IntegrationId">example1</Item>
                 <Item Key="Title">Example Integration By Ligero 1</Item>
-                <Item Key="Template">Example1</Item>
+                <Item Key="Module">IntegrationExample1</Item>
+                <Item Key="Enable">0</Item>
             </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###IntegrationExample1" Required="1" Valid="1">
+        <Description Lang="en">Frontend module registration for the Integration Example 1</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>admin</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="Description">Ligero Integration Example 1</Item>
+                    <Item Key="NavBarName">Admin</Item>
+                </Hash>
+            </Item>
         </Value>
     </Setting>
     <Setting Name="Ligero::Integrations###ExampleIntegration2" Required="0" Valid="1">
@@ -18,8 +36,26 @@
             <Hash>
                 <Item Key="IntegrationId">example2</Item>
                 <Item Key="Title">Example Integration By Ligero 2</Item>
-                <Item Key="Template">Example2</Item>
+                <Item Key="Module">IntegrationExample2</Item>
+                <Item Key="Enable">0</Item>
             </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###IntegrationExample2" Required="1" Valid="1">
+        <Description Lang="en">Frontend module registration for the Integration Example 2</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>admin</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="Description">Ligero Integration Example 2</Item>
+                    <Item Key="NavBarName">Admin</Item>
+                </Hash>
+            </Item>
         </Value>
     </Setting>
     <Setting Name="Loader::Agent::CommonCSS###998-Vuetify" Required="1" Valid="1">

@@ -6,7 +6,34 @@
     </v-stepper-step>
 
     <v-stepper-content step="1">
-      <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
+      <v-card class="mb-12" height="200px">
+        <v-container>
+          <v-row>
+            <v-col
+              cols="12"
+              md="6"
+            >
+              <v-text-field
+                v-model="field1"
+                :counter="10"
+                label="Field 1"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              md="6"
+            >
+              <v-text-field
+                v-model="field2"
+                :counter="10"
+                label="Field 2"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
       <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
       <v-btn text>Cancel</v-btn>
     </v-stepper-content>
@@ -14,7 +41,34 @@
     <v-stepper-step :complete="e6 > 2" step="2">Configure analytics for this app</v-stepper-step>
 
     <v-stepper-content step="2">
-      <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
+      <v-card class="mb-12" height="200px">
+        <v-container>
+          <v-row>
+            <v-col
+              cols="12"
+              md="6"
+            >
+              <v-text-field
+                v-model="field3"
+                :counter="10"
+                label="Field 3"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              md="6"
+            >
+              <v-text-field
+                v-model="field4"
+                :counter="10"
+                label="Field 4"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
       <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
       <v-btn text>Cancel</v-btn>
     </v-stepper-content>
@@ -22,15 +76,69 @@
     <v-stepper-step :complete="e6 > 3" step="3">Select an ad format and name ad unit</v-stepper-step>
 
     <v-stepper-content step="3">
-      <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
+      <v-card class="mb-12" height="200px">
+        <v-container>
+          <v-row>
+            <v-col
+              cols="12"
+              md="6"
+            >
+              <v-text-field
+                v-model="field5"
+                :counter="10"
+                label="Field 5"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              md="6"
+            >
+              <v-text-field
+                v-model="field6"
+                :counter="10"
+                label="Field 6"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
       <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
       <v-btn text>Cancel</v-btn>
     </v-stepper-content>
 
     <v-stepper-step step="4">View setup instructions</v-stepper-step>
     <v-stepper-content step="4">
-      <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
-      <v-btn color="primary" @click="e6 = 1">Continue</v-btn>
+      <v-card class="mb-12" height="200px">
+        <v-container>
+          <v-row>
+            <v-col
+              cols="12"
+              md="6"
+            >
+              <v-text-field
+                v-model="field7"
+                :counter="10"
+                label="Field 7"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              md="6"
+            >
+              <v-text-field
+                v-model="field8"
+                :counter="10"
+                label="Field 8"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+      <v-btn color="primary" @click="doConfigure()">Finish</v-btn>
       <v-btn text>Cancel</v-btn>
     </v-stepper-content>
   </v-stepper>
