@@ -132,128 +132,43 @@ sub Run {
     }
 
     # ------------------------------------------------------------ #
-    # change
+    # SendConfigData
     # ------------------------------------------------------------ #
-    if ( $Self->{Subaction} eq 'GetConfigScreen' ) {
-        #my $ID = $ParamObject->GetParam( Param => 'ID' ) || '';
+    if ( $Self->{Subaction} eq 'SendConfigData' ) {
 
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
-            Priority => 'error',
-            Message  => "CHEGOU AQUI ",
+        my $JSONObject = $Kernel::OM->Get('Kernel::System::JSON');
 
-        );
+        my $Value = $ParamObject->GetParam( Param => 'Data' ) || '';
 
-        my $Output .= $LayoutObject->Output(
-            TemplateFile => 'Teste1'
-        );
-
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
-            Priority => 'error',
-            Message  => "CHEGOU AQUI 2 ".$Output,
-
+        my $JSOND = $JSONObject->Decode(
+            Data => $Value,
         );
 
         use Data::Dumper;
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'error',
-            Message  => "CHEGOU AQUI 3 ".Dumper($LayoutObject->Attachment(
-            ContentType => 'text/html; charset=' . $LayoutObject->{Charset},
-            Content     => $Output,
-            Type        => 'inline',
-            NoCache     => 1,
-        )),
+            Message  => "CHEGOU AQUI ".Dumper($JSOND),
 
+        );
+
+        $JSOND->{e6} = 1;
+
+        my $Result = {
+            Result => 1,
+            Data => $JSOND
+        };
+
+        my $JSON = $LayoutObject->JSONEncode(
+            Data => $Result,
         );
 
         return $LayoutObject->Attachment(
-            ContentType => 'text/html; charset=' . $LayoutObject->{Charset},
-            Content     => $Output,
+            ContentType => 'application/json; charset=utf8',
+            Content     => $JSON || '',
             Type        => 'inline',
             NoCache     => 1,
         );
     }
-
-    # ------------------------------------------------------------ #
-    # change
-    # ------------------------------------------------------------ #
-    if ( $Self->{Subaction} eq 'Change' ) {
-        my $ID = $ParamObject->GetParam( Param => 'ID' ) || '';
-
-        my $Output = $LayoutObject->Header();
-        $Output .= $LayoutObject->NavigationBar();
-        $Output .= $LayoutObject->Output(
-            TemplateFile => 'AdminIntegrations',
-            Data         => \%Param,
-        );
-        $Output .= $LayoutObject->Footer();
-        return $Output;
-    }
-
-    # ------------------------------------------------------------ #
-    # change action
-    # ------------------------------------------------------------ #
-    elsif ( $Self->{Subaction} eq 'ChangeAction' ) {
-
-        # challenge token check for write action
-        $LayoutObject->ChallengeTokenCheck();
-
-        my $Output = $LayoutObject->Header();
-        $Output .= $LayoutObject->NavigationBar();
-        $Output .= $LayoutObject->Output(
-            TemplateFile => 'AdminIntegrations',
-            Data         => \%Param,
-        );
-        $Output .= $LayoutObject->Footer();
-        return $Output;
-    }
-
-    # ------------------------------------------------------------ #
-    # add
-    # ------------------------------------------------------------ #
-    elsif ( $Self->{Subaction} eq 'Add' ) {
-
-        my $Output = $LayoutObject->Header();
-        $Output .= $LayoutObject->NavigationBar();
-        $Output .= $LayoutObject->Output(
-            TemplateFile => 'AdminIntegrations',
-            Data         => \%Param,
-        );
-        $Output .= $LayoutObject->Footer();
-        return $Output;
-    }
-
-    # ------------------------------------------------------------ #
-    # add action
-    # ------------------------------------------------------------ #
-    elsif ( $Self->{Subaction} eq 'AddAction' ) {
-
-        # challenge token check for write action
-        $LayoutObject->ChallengeTokenCheck();
-        
-        my $Output = $LayoutObject->Header();
-        $Output .= $LayoutObject->NavigationBar();
-        $Output .= $LayoutObject->Output(
-            TemplateFile => 'AdminIntegrations',
-            Data         => \%Param,
-        );
-        $Output .= $LayoutObject->Footer();
-        return $Output;
-    }
-
-    # ------------------------------------------------------------
-    # overview
-    # ------------------------------------------------------------
-    #else {
-        $Self->_Overview();
-        my $Output = $LayoutObject->Header();
-        $Output .= $LayoutObject->NavigationBar();
-        $Output .= $LayoutObject->Output(
-            TemplateFile => 'AdminIntegrations',
-            Data         => \%Param,
-        );
-        $Output .= $LayoutObject->Footer();
-        return $Output;
-#    }
 
 }
 
