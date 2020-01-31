@@ -147,7 +147,7 @@ sub Run {
         use Data::Dumper;
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'error',
-            Message  => "CHEGOU AQUI ".Dumper($JSOND),
+            Message  => "DADOS ENVIADOS ".Dumper($JSOND),
 
         );
 
