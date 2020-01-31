@@ -1,0 +1,7 @@
+1 - Instalar ou ter instalado o Node.js
+2 - Instalar ou ter instalado o plugin LESS do node. Para instalar usar o comando: "npm install -g less"
+3 - Criar um arquivo chamado prefix.less como o contido nesse repositório
+4 - Executar a compilação do prefix.less com o comando "lessc prefix.less vuetify-iso.css"
+5 - Após o arquivo ser criado, abra-o e remova qualquer menção que exista a "HTML" ou para a "BODY" essas tags deixam de ter função pois todo o estilo passa ser aplicado a partir de tags internas a essas.
+
+ENJOY IT!

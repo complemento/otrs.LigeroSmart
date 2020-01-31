@@ -29,27 +29,7 @@ Core.Vue = new Vue({
           this.updating = true;
           this.getDataFromApi()
             .then(data => {
-              this.cards = data;
-              this.updating = false;
-              for (const a of this.cards) {
-                this.updating = true;
-                a.TemplateData.then(val =>{
-                  this.updating = false;
-                  a.Enable = val.Enable;
-                  Vue.component(a.IntegrationId, 
-                    { 
-                      template: val.Template, 
-                      data () {
-                        return val.DataStructure
-                      },
-                      methods: {
-                        doConfigure(){
-                          console.log("Cliquei no configure",this.data)
-                        }
-                      } 
-                    });
-                });
-              }
+              this.preparerData(data);
             })
         },
         deep: true,
@@ -59,49 +39,7 @@ Core.Vue = new Vue({
       this.updating = true;
       this.getDataFromApi()
         .then(data => {
-          this.cards = data;
-          this.updating = false;
-          for (const a of this.cards) {
-            this.updating = true;
-            a.TemplateData.then(val =>{
-              this.updating = false;
-              a.Enable = val.Enable;
-              val.DataStructure.Module = a.Module;
-              Vue.component(a.IntegrationId, 
-                { 
-                  template: val.Template, 
-                  data () {
-                    return val.DataStructure
-                  },
-                  methods: {
-                    doConfigure(){
-                      var Data = {
-                        Action: this._data.Module,
-                        Subaction: 'SendConfigData',
-                        Data: JSON.stringify(this._data)
-                      };
-                      console.log("Cliquei no configure",this._data.field1)
-                      new Promise((resolve, reject) => {
-                        Core.AJAX.FunctionCall(Core.Config.Get('CGIHandle'), Data, function (Response) {
-                          resolve(
-                            Response
-                          )
-                        })
-                      }).then(val => {
-                        Core.Vue.$data.snackbar = true;
-                        if(val.Result == 1){
-                          Core.Vue.$data.text = "Save with success";
-                          Object.assign(this.$data, val.Data);
-                          Core.Vue.$data.dialog = false;
-                        } else {
-                          Core.Vue.$data.text = "Fail to save";
-                        }
-                      });
-                    }
-                  } 
-                });
-            });
-          }
+          this.preparerData(data);
         })
     },
     methods: {
@@ -162,9 +100,50 @@ Core.Vue = new Vue({
           }
           this.updating = false;
         });
-        
-        
-        console.log(card);
+      },
+      preparerData(data){
+        this.cards = data;
+          this.updating = false;
+          for (const a of this.cards) {
+            this.updating = true;
+            a.TemplateData.then(val =>{
+              this.updating = false;
+              a.Enable = val.Enable;
+              val.DataStructure.Module = a.Module;
+              Vue.component(a.IntegrationId, 
+                { 
+                  template: val.Template, 
+                  data () {
+                    return val.DataStructure
+                  },
+                  methods: {
+                    doConfigure(){
+                      var Data = {
+                        Action: this._data.Module,
+                        Subaction: 'SendConfigData',
+                        Data: JSON.stringify(this._data)
+                      };
+                      new Promise((resolve, reject) => {
+                        Core.AJAX.FunctionCall(Core.Config.Get('CGIHandle'), Data, function (Response) {
+                          resolve(
+                            Response
+                          )
+                        })
+                      }).then(val => {
+                        Core.Vue.$data.snackbar = true;
+                        if(val.Result == 1){
+                          Core.Vue.$data.text = "Save with success";
+                          Object.assign(this.$data, val.Data);
+                          Core.Vue.$data.dialog = false;
+                        } else {
+                          Core.Vue.$data.text = "Fail to save";
+                        }
+                      });
+                    }
+                  } 
+                });
+            });
+          }
       }
     }
 })

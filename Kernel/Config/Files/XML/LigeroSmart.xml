@@ -106,7 +106,7 @@
                         <Array>
                         </Array>
                     </Item>
-                    <Item Key="Title">Ligero Integrations</Item>
+                    <Item Key="Title">Integrations</Item>
                     <Item Key="Group">
                         <Array>
                             <Item>admin</Item>
@@ -158,10 +158,10 @@
                     </Array>
                 </Item>
                 <Item Key="Module">Kernel::Output::HTML::NavBar::ModuleAdmin</Item>
-                <Item Key="Name">Ligero Integrations</Item>
-                <Item Key="Block">Customer</Item>
-                <Item Key="Description"></Item>
-                <Item Key="IconBig"></Item>
+                <Item Key="Name">Integrations</Item>
+                <Item Key="Block">Automation</Item>
+                <Item Key="Description">Configure your integration easily.</Item>
+                <Item Key="IconBig">fa-cloud</Item>
                 <Item Key="IconSmall"></Item>
             </Hash>
         </Value>
