@@ -151,11 +151,12 @@ sub Run {
 
         );
 
-        $JSOND->{e6} = 1;
+        $JSOND = _GetTemplateData();
 
         my $Result = {
             Result => 1,
-            Data => $JSOND
+            Data => $JSOND,
+            Message => ''
         };
 
         my $JSON = $LayoutObject->JSONEncode(

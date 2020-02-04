@@ -78,8 +78,10 @@ Core.Vue = new Vue({
           this.component = IntegrationId
         }
       },
-      doActivate(card){
-        this.updating = true;
+      doActivate(card, index){
+        card.updating = true;
+
+        console.log("Index ",index);
 
         var Data = {
           Action: card.Module,
@@ -98,7 +100,7 @@ Core.Vue = new Vue({
           } else {
             this.text = "Fail to save";
           }
-          this.updating = false;
+          Core.Vue.$data.cards[index].updating = false;
         });
       },
       preparerData(data){
@@ -110,6 +112,7 @@ Core.Vue = new Vue({
               this.updating = false;
               a.Enable = val.Enable;
               val.DataStructure.Module = a.Module;
+              val.DataStructure.IntegrationId = a.IntegrationId;
               Vue.component(a.IntegrationId, 
                 { 
                   template: val.Template, 
@@ -133,16 +136,24 @@ Core.Vue = new Vue({
                         Core.Vue.$data.snackbar = true;
                         if(val.Result == 1){
                           Core.Vue.$data.text = "Save with success";
-                          Object.assign(this.$data, val.Data);
+                          Object.assign(this.$data, val.Data.DataStructure);
                           Core.Vue.$data.dialog = false;
+                          for (const card of Core.Vue.$data.cards) {
+                            if(card.IntegrationId === this._data.IntegrationId){
+                              card.Enable = val.Data.Enable;
+                            }
+                          }
+                          console.log("Module data ",val);
                         } else {
-                          Core.Vue.$data.text = "Fail to save";
+                          Core.Vue.$data.text = val.Message;
                         }
                       });
                     }
                   } 
                 });
+                
             });
+            
           }
       }
     }
