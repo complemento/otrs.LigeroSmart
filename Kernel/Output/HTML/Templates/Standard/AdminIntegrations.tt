@@ -7,7 +7,7 @@
                 <v-container fluid>
                     <v-row dense>
                         <v-col
-                        v-for="card in cards"
+                        v-for="(card, index) in cards"
                         :key="card.IntegrationId"
                         :cols="card.flex"
                         >
@@ -21,18 +21,18 @@
                             <v-card-title v-text="card.Title"></v-card-title>
                             </v-img>
 
-                            <v-card-actions v-if="!updating">
+                            <v-card-actions v-if="!card.updating">
                             <v-spacer></v-spacer>
 
                             <v-switch v-model="card.Enable"
-                            @change="doActivate(card)"
+                            @change="doActivate(card, index)"
                             ></v-switch>
 
                             <v-btn icon @click="dialog = true; integrationName = card.Title; openConfiguration(card.IntegrationId);">
                                 <v-icon>mdi-settings</v-icon>
                             </v-btn>
                             </v-card-actions>
-                            <v-container v-if="updating" style="height: 82px;">
+                            <v-container v-if="card.updating" style="height: 82px;">
                               <v-row
                                 align-content="center"
                                 justify="center"
