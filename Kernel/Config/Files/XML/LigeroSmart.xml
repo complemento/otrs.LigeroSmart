@@ -9,6 +9,7 @@
                 <Item Key="Title">Example Integration By Ligero 1</Item>
                 <Item Key="Module">IntegrationExample1</Item>
                 <Item Key="Enable">0</Item>
+                <Item Key="Image">https://blog.wildix.com/wp-content/uploads/2018/09/Determining-Integration-Requirements.png</Item>
             </Hash>
         </Value>
     </Setting>
@@ -38,6 +39,7 @@
                 <Item Key="Title">Example Integration By Ligero 2</Item>
                 <Item Key="Module">IntegrationExample2</Item>
                 <Item Key="Enable">0</Item>
+                <Item Key="Image">https://blog.wildix.com/wp-content/uploads/2018/09/Determining-Integration-Requirements.png</Item>
             </Hash>
         </Value>
     </Setting>
