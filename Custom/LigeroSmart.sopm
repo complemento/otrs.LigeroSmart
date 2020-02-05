@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <otrs_package version="1.0">
     <Name>LigeroSmart</Name>
-    <Version>6.1.0</Version>
+    <Version>6.1.1</Version>
     <Framework>6.0.x</Framework>
     <Vendor>Ligero</Vendor>
     <URL>http://www.complemento.net.br/</URL>
@@ -11,7 +11,6 @@
     <Filelist>
         <File Permission="644" Location="Kernel/Config/Files/XML/LigeroSmart.xml"></File>
         <File Permission="644" Location="Kernel/System/LigeroSmart.pm"></File>
-        <File Permission="644" Location="Custom/Kernel/System/Ticket/TicketSearch.pm"></File>
         <File Permission="644" Location="Kernel/GenericInterface/Invoker/LigeroSmart/LigeroSmartIndexer.pm"></File>
         <File Permission="644" Location="Kernel/System/Console/Command/Maint/Ligero/Elasticsearch/TicketIndexRebuild.pm"></File>
         <File Permission="644" Location="var/packagesetup/LigeroSmart.pm"></File>
