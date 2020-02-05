@@ -3,7 +3,7 @@ package Kernel::Modules::AdminIntegrations;
 
 use strict;
 use warnings;
-
+use Data::Dumper;
 use vars qw($VERSION);
 $VERSION = qw($Revision: 1.20 $) [1];
 
@@ -34,12 +34,8 @@ sub Run {
     if ( $Self->{Subaction} eq 'GetIntegrationList' ) {
         my %Integrations = %{ $ConfigObject->Get('Ligero::Integrations') };
 
-        use Data::Dumper;
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
-            Priority => 'error',
-            Message  => "Integration List ".Dumper(\%Integrations),
+        
 
-        );
 
         my @ArrayIntegrations = ();
         while ((my $key, my $value) = each (%Integrations))
@@ -49,14 +45,12 @@ sub Run {
                 Default => 1,
             );
 
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => 'error',
-                Message  => "IsValid ".Dumper(\%Setting),
-
-            );
-
             if($Setting{IsValid}){
-                $value->{src} = 'https://blog.wildix.com/wp-content/uploads/2018/09/Determining-Integration-Requirements.png';
+                $Kernel::OM->Get('Kernel::System::Log')->Log(
+                    Priority => 'error',
+                    Message  => "------------------ ".$value->{Image},
+                );
+                $value->{Image} = $value->{Image} // 'https://blog.wildix.com/wp-content/uploads/2018/09/Determining-Integration-Requirements.png';
                 $value->{flex} = 3;
                 $value->{Enable} = $value->{Enable} == '1';
                 push @ArrayIntegrations, $value;
