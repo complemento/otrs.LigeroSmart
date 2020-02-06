@@ -37,7 +37,8 @@ sub _GetTemplateData {
             field5 => 'Field 5',
             field6 => 'Field 6',
             field7 => 'Field 7',
-            field8 => 'Field 8'
+            field8 => 'Field 8',
+            itemsField1 => ['Foo', 'Bar', 'Fizz', 'Buzz']
         },
         Enable => _CheckStatus()
     };
