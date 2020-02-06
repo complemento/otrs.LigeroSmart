@@ -42,8 +42,10 @@ sub Run {
         );
 
         my @ArrayIntegrations = ();
-        while ((my $key, my $value) = each (%Integrations))
-        {
+
+        foreach my $key (sort keys %Integrations) {
+            my $value = $Integrations{$key};
+
             my %Setting = $SysConfigObject->SettingGet(
                 Name    => 'Ligero::Integrations###'.$key,
                 Default => 1,

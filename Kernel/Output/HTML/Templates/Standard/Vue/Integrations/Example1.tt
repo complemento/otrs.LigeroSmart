@@ -13,12 +13,12 @@
               cols="12"
               md="6"
             >
-              <v-text-field
-                v-model="field1"
-                :counter="10"
+              <v-select
+                :items="itemsField1"
                 label="Field 1"
-                required
-              ></v-text-field>
+                v-model="field1"
+                
+              ></v-select>
             </v-col>
             <v-col
               cols="12"

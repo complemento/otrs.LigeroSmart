@@ -1,3 +1,12 @@
+.vuetify-iso input[type=text][readonly], input[type=password][readonly], input[type=email][readonly], textarea[readonly] {
+   background-color: transparent; 
+}
+
+.vuetify-iso input[type=text], input[type=password], input[type=email], textarea, select[multiple=multiple] {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
 .vuetify-iso {
   @charset "UTF-8";
   /* cyrillic-ext */
