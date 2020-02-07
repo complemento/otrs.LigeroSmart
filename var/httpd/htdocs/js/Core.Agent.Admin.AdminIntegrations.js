@@ -120,6 +120,9 @@ Core.Vue = new Vue({
                     return val.DataStructure
                   },
                   methods: {
+                    closeDialog() {
+                      Core.Vue.$data.dialog = false;
+                    },
                     doConfigure(){
                       var Data = {
                         Action: this._data.Module,
