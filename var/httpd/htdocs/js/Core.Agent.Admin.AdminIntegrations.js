@@ -21,6 +21,7 @@ Core.Vue = new Vue({
         component: 'component-a',
         updating: false,
         snackbar: false,
+        snackbarError: false,
         text: '',
     }},
     watch: {
@@ -94,11 +95,18 @@ Core.Vue = new Vue({
             resolve(Response)
           });
         }).then(value => {
-          this.snackbar = true;
-          if(value == 1){
-            this.text = "Save with success";
+          if(value.Result == 1){
+            this.snackbar = true;
+            if(value.Message)
+              this.text = value.Message;
+            else
+              this.text = "Save with success";
           } else {
-            this.text = "Fail to save";
+            this.snackbarError = true;
+            if(value.Message)
+              this.text = value.Message;
+            else
+              this.text = "Fail to save";
           }
           Core.Vue.$data.cards[index].updating = false;
         });
@@ -136,9 +144,12 @@ Core.Vue = new Vue({
                           )
                         })
                       }).then(val => {
-                        Core.Vue.$data.snackbar = true;
                         if(val.Result == 1){
-                          Core.Vue.$data.text = "Save with success";
+                          Core.Vue.$data.snackbar = true;
+                          if(val.Message)
+                            Core.Vue.$data.text = val.Message;
+                          else
+                            Core.Vue.$data.text = "Save with success";
                           Object.assign(this.$data, val.Data.DataStructure);
                           Core.Vue.$data.dialog = false;
                           for (const card of Core.Vue.$data.cards) {
@@ -148,6 +159,7 @@ Core.Vue = new Vue({
                           }
                           console.log("Module data ",val);
                         } else {
+                          Core.Vue.$data.snackbarError = true;
                           Core.Vue.$data.text = val.Message;
                         }
                       });

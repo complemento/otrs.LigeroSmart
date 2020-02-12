@@ -112,7 +112,10 @@ sub Run {
         );
 
         my $JSON = $LayoutObject->JSONEncode(
-            Data => 1,
+            Data => {
+                Result => 0,
+                Message => "Erro ao salvar"
+            },
         );
 
         return $LayoutObject->Attachment(

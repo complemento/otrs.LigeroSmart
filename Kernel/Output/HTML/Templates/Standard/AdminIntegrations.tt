@@ -87,12 +87,26 @@
       </v-dialog>
       <v-snackbar
         v-model="snackbar"
+        color="success"
       >
         {{ text }}
         <v-btn
-          color="pink"
+          dark
           text
           @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </v-snackbar>
+      <v-snackbar
+        v-model="snackbarError"
+        color="error"
+      >
+        {{ text }}
+        <v-btn
+          dark
+          text
+          @click="snackbarError = false"
         >
           Close
         </v-btn>
