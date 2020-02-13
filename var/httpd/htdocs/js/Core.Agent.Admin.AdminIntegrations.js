@@ -120,6 +120,7 @@ Core.Vue = new Vue({
               this.updating = false;
               a.Enable = val.Enable;
               val.DataStructure.Module = a.Module;
+              val.DataStructure.valid = true;
               val.DataStructure.IntegrationId = a.IntegrationId;
               Vue.component(a.IntegrationId, 
                 { 
@@ -130,6 +131,17 @@ Core.Vue = new Vue({
                   methods: {
                     closeDialog() {
                       Core.Vue.$data.dialog = false;
+                    },
+                    validate (formName,callback) {
+                      if(this.$refs[formName].validate()){
+                        callback();
+                      }
+                    },
+                    reset (formName) {
+                      this.$refs[formName].reset()
+                    },
+                    resetValidation (formName) {
+                      this.$refs[formName].resetValidation()
                     },
                     doConfigure(){
                       var Data = {
