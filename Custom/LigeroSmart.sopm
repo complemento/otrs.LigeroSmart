@@ -20,6 +20,8 @@
         <File Permission="644" Location="Kernel/System/Console/Command/Admin/Ligero/Elasticsearch/Reindex.pm"></File>
         <File Permission="644" Location="Kernel/Config/Files/XML/LigeroSmartMappings.xml"></File>
         <File Permission="644" Location="Kernel/GenericInterface/Operation/LigeroSmart/Search.pm"></File>
+        <File Permission="644" Location="Custom/Kernel/System/Stats/Dynamic/TicketList.pm"></File>
+        <File Permission="644" Location="Custom/Kernel/System/Ticket.pm"></File>
     </Filelist>
 	<CodeInstall Type="post">
         my $CodeModule = 'var::packagesetup::' . $Param{Structure}-&gt;{Name}-&gt;{Content};
