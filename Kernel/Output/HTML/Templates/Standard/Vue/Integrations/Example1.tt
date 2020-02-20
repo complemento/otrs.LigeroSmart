@@ -150,8 +150,8 @@
           </v-row>
         </v-container>
       </v-card>
-      <v-btn color="primary" @click="doConfigure(this)">Finish</v-btn>
-      <v-btn text @click="closeDialog()">Cancel</v-btn>
+      <v-btn color="primary" @click="e6 = 1;doConfigure(this)">Finish</v-btn>
+      <v-btn text @click="e6 = 1;closeDialog()">Cancel</v-btn>
     </v-stepper-content>
   </v-stepper>
 </v-content>

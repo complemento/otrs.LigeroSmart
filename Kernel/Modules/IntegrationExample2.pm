@@ -41,7 +41,7 @@ sub _CheckStatus {
 
     my %Integrations = %{ $ConfigObject->Get('Ligero::Integrations') };
 
-    return $Integrations{ExampleIntegration2}->{Enable} == '1'
+    return $Integrations{ExampleIntegration2}->{Enable} eq '1'
 }
 
 sub Run {

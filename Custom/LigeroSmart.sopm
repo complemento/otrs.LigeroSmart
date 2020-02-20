@@ -11,6 +11,7 @@
     <Filelist>
         <File Permission="644" Location="Kernel/Config/Files/XML/LigeroSmart.xml"></File>
         <File Permission="644" Location="Kernel/System/LigeroSmart.pm"></File>
+        <File Permission="644" Location="Kernel/System/Vue.pm"></File>
         <File Permission="644" Location="Kernel/GenericInterface/Invoker/LigeroSmart/LigeroSmartIndexer.pm"></File>
         <File Permission="644" Location="Kernel/System/Console/Command/Maint/Ligero/Elasticsearch/TicketIndexRebuild.pm"></File>
         <File Permission="644" Location="var/packagesetup/LigeroSmart.pm"></File>

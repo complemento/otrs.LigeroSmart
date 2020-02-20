@@ -23,12 +23,22 @@ sub new {
 
 sub _GetTemplateData {
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+    my $SystemDataObject = $Kernel::OM->Get('Kernel::System::SystemData');
+    my $JSONObject = $Kernel::OM->Get('Kernel::System::JSON');
 
-    my $IntegrationData = {
-        Template => $LayoutObject->Output(
-                TemplateFile => 'Vue/Integrations/Example1'
-            ),
-        DataStructure => {
+    my $SystemData = $SystemDataObject->SystemDataGet(
+        Key => 'IntegrationTest1',
+    );
+    
+    my $DataStructure;
+    if($SystemData){
+        my $JSOND = $JSONObject->Decode(
+            Data => $SystemData,
+        );
+        
+        $DataStructure = $JSOND;
+    } else {
+        $DataStructure = {
             e6 => 1,
             field1 => 'Field 1',
             field2 => 'Field 2',
@@ -39,7 +49,22 @@ sub _GetTemplateData {
             field7 => 'Field 7',
             field8 => 'Field 8',
             itemsField1 => ['Foo', 'Bar', 'Fizz', 'Buzz']
-        },
+        };
+        my $JSON = $LayoutObject->JSONEncode(
+            Data => $DataStructure,
+        );
+        my $Result = $SystemDataObject->SystemDataAdd(
+            Key    => 'IntegrationTest1',
+            Value  => $JSON,
+            UserID => 1,
+        );
+    }
+
+    my $IntegrationData = {
+        Template => $LayoutObject->Output(
+                TemplateFile => 'Vue/Integrations/Example1'
+            ),
+        DataStructure => $DataStructure,
         Enable => _CheckStatus()
     };
     return $IntegrationData;
@@ -59,6 +84,7 @@ sub Run {
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
     my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
+    my $SystemDataObject = $Kernel::OM->Get('Kernel::System::SystemData');
 
     # ------------------------------------------------------------ #
     # GetTemplateData
@@ -155,9 +181,15 @@ sub Run {
 
         );
 
+        my $Result = $SystemDataObject->SystemDataUpdate(
+            Key    => 'IntegrationTest1',
+            Value  => $Value,
+            UserID => 1,
+        );
+
         $JSOND = _GetTemplateData();
 
-        my $Result = {
+        $Result = {
             Result => 1,
             Data => $JSOND,
             Message => ''
