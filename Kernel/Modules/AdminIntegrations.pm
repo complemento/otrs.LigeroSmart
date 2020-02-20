@@ -27,6 +27,7 @@ sub Run {
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
     my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
+    my $TranslateObject = $Kernel::OM->Get('Kernel::Language');
 
     # ------------------------------------------------------------ #
     # GetIntegrationList
@@ -48,13 +49,10 @@ sub Run {
             );
 
             if($Setting{IsValid}){
-                $Kernel::OM->Get('Kernel::System::Log')->Log(
-                    Priority => 'error',
-                    Message  => "------------------ ".$value->{Image},
-                );
                 $value->{Image} = $value->{Image} // 'https://blog.wildix.com/wp-content/uploads/2018/09/Determining-Integration-Requirements.png';
                 $value->{flex} = 3;
-                $value->{Enable} = $value->{Enable} == '1';
+                $value->{Enable} = $value->{Enable} eq '1';
+                $value->{Title} = $TranslateObject->Translate($value->{Title});
                 push @ArrayIntegrations, $value;
             }
         }
