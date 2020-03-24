@@ -49,6 +49,9 @@ sub CodeUpgrade {
     #$Self->_CreateDynamicFields();
     $Self->_CreateWebServices();
     #$Self->_UpdateConfig();
+
+    # Try to remove log file
+    unlink '/opt/otrs/var/tmp/ligerosearch.log';
 	
     return 1;
 }

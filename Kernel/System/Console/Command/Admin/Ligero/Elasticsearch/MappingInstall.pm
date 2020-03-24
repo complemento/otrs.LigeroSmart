@@ -39,6 +39,13 @@ sub Configure {
     );
 
     $Self->AddOption(
+        Name        => 'ForceDelete',
+        Description => "Try to Delete before creating new index",
+        Required    => 0,
+        HasValue    => 0,
+    );
+
+    $Self->AddOption(
         Name        => 'DefaultLanguage',
         Description => "Install mapping for default OTRS Language",
         Required    => 0,
@@ -89,6 +96,29 @@ sub Run {
 
 	# for each language
 	for my $Lang (@Languages){
+
+		if($Self->GetOption('ForceDelete')){
+			my $Result = $Kernel::OM->Get('Kernel::System::LigeroSmart')->IndexDelete(
+				Index 	 => 'ticket_'.$Index.'_'.$Lang,
+			);
+			$Self->Print("<yellow>Trying to delete Index ticket_$Index"."_"."$Lang.</yellow>\n");
+
+			$Result = $Kernel::OM->Get('Kernel::System::LigeroSmart')->IndexDelete(
+				Index 	 => 'portallinks_'.$Index.'_'.$Lang,
+			);
+			$Self->Print("<yellow>Trying to delete Index portallinks_$Index"."_"."$Lang.</yellow>\n");
+
+			$Result = $Kernel::OM->Get('Kernel::System::LigeroSmart')->IndexDelete(
+				Index 	 => 'ticket_'.$Index.'_'.$Lang."_index",
+			);
+			$Self->Print("<yellow>Trying to delete Index ticket_$Index"."_".$Lang."_index.</yellow>\n");
+
+			$Result = $Kernel::OM->Get('Kernel::System::LigeroSmart')->IndexDelete(
+				Index 	 => 'portallinks_'.$Index.'_'.$Lang."_index",
+			);
+			$Self->Print("<yellow>Trying to delete Index portallinks_$Index"."_".$Lang."_index.</yellow>\n");
+		}
+
 		my $Result = $Kernel::OM->Get('Kernel::System::LigeroSmart')->IndexCreate(
 			Index 	 => 'ticket_'.$Index,
 			Language => $Lang

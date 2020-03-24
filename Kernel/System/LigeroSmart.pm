@@ -153,7 +153,7 @@ sub Search {
     
     my $e = Search::Elasticsearch->new(
         nodes => @Nodes,
-        (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
+        # (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
     );    
     
     my @SearchResults;
@@ -203,7 +203,7 @@ sub SearchTemplate {
     
     my $e = Search::Elasticsearch->new(
         nodes => @Nodes,
-        (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
+        # (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
     );
     
     my @SearchResults;
@@ -294,7 +294,7 @@ sub DeleteByQuery {
     
     my $e = Search::Elasticsearch->new(
         nodes => @Nodes,
-        (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
+        # (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
     );    
     
     my $DeletedInformation;
@@ -371,7 +371,7 @@ sub Index {
     
     my $e = Search::Elasticsearch->new(
         nodes => @Nodes,
-        (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
+        # (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
     );    
     
     my $Result;
@@ -438,7 +438,7 @@ sub IndexCreate {
     
     my $e = Search::Elasticsearch->new(
         nodes => @Nodes,
-        (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
+        # (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
     );    
     
 	# Check if theres is an index version for this prefix and language
@@ -568,7 +568,7 @@ sub IndexDelete {
     
     my $e = Search::Elasticsearch->new(
         nodes => @Nodes,
-        (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
+        # (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
     );    
     
 	my $Result;
@@ -619,7 +619,7 @@ sub IngestPipelineInstall {
     
     my $e = Search::Elasticsearch->new(
         nodes => @Nodes,
-        (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
+        # (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
     );    
     
 	# create json object - We cannot use LIGERO Json object directly because it sanitize true and false and we get errors from elasticsearch
@@ -745,7 +745,7 @@ sub Reindex {
     my @Nodes = @{$Self->{Config}->{Nodes}};
     my $e = Search::Elasticsearch->new(
         nodes => @Nodes,
-        (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
+        # (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
     );
 
 	my $Task;
@@ -829,7 +829,7 @@ sub CheckReindexStatus {
     my @Nodes = @{$Self->{Config}->{Nodes}};
     my $e = Search::Elasticsearch->new(
         nodes => @Nodes,
-        (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
+        # (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
     );
 
 	my %Result;
@@ -910,7 +910,7 @@ sub CheckCurrentIndexVersion {
     
     my $e = Search::Elasticsearch->new(
         nodes => @Nodes,
-        (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
+        # (trace_to => ['File','/opt/otrs/var/tmp/ligerosearch.log'])
     );    
 
 	my $Result;
