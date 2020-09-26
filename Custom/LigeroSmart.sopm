@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <otrs_package version="1.0">
     <Name>LigeroSmart</Name>
-    <Version>6.1.5</Version>
+    <Version>6.1.6</Version>
     <Framework>6.0.x</Framework>
     <Vendor>Ligero</Vendor>
     <URL>http://www.complemento.net.br/</URL>
@@ -25,6 +25,7 @@
         <File Permission="644" Location="Custom/Kernel/System/LinkObject.pm"></File>
         <File Permission="644" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminService.tt"></File>
         <File Permission="644" Location="Kernel/System/GenericAgent/DynamicFieldFromServicePreference.pm"></File>
+        <File Permission="644" Location="Kernel/Config/Files/ZZZZDeactiveCmdOutput.pm"></File>
     </Filelist>
 	<CodeInstall Type="post">
         my $CodeModule = 'var::packagesetup::' . $Param{Structure}-&gt;{Name}-&gt;{Content};
