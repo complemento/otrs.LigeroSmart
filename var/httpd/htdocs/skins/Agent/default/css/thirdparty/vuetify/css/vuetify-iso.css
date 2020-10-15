@@ -1,3 +1,7 @@
+input[type=text], input[type=password], input[type=email], textarea, select[multiple=multiple] {
+  border: none !important;
+}
+
 .vuetify-iso input[type=text][readonly], input[type=password][readonly], input[type=email][readonly], textarea[readonly] {
    background-color: transparent; 
 }
