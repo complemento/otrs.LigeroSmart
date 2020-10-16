@@ -4,13 +4,19 @@
 4 - Executar a compilação do prefix.less com o comando "lessc prefix.less vuetify-iso.css"
 5 - Após o arquivo ser criado, abra-o e remova qualquer menção que exista a "HTML" ou para a "BODY" essas tags deixam de ter função pois todo o estilo passa ser aplicado a partir de tags internas a essas.
 6 - Adicionar o conteúdo abaixo no inicio do arquivo vuetify-iso:
-    .vuetify-iso input[type=text][readonly], input[type=password][readonly], input[type=email][readonly], textarea[readonly] {
-        background-color: transparent; 
-    }
 
-    .vuetify-iso input[type=text], input[type=password], input[type=email], textarea, select[multiple=multiple] {
-        -webkit-box-shadow: none;
-        box-shadow: none;
-    }
+  .vuetify-iso input[type=text], .vuetify-iso input[type=password], .vuetify-iso input[type=email], .vuetify-iso textarea, .vuetify-iso select[multiple=multiple] {
+    border: none !important;
+  }
 
+  .vuetify-iso input[type=text][readonly], .vuetify-iso input[type=password][readonly], .vuetify-iso input[type=email][readonly], .vuetify-iso textarea[readonly] {
+    background-color: transparent; 
+  }
+
+  .vuetify-iso input[type=text], .vuetify-iso input[type=password], .vuetify-iso input[type=email], .vuetify-iso textarea, .vuetify-iso select[multiple=multiple] {
+      -webkit-box-shadow: none;
+      box-shadow: none;
+  }
+  
+  
 ENJOY IT!
