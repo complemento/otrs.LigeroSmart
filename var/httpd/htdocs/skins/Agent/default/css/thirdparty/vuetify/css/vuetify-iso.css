@@ -1,12 +1,12 @@
-input[type=text], input[type=password], input[type=email], textarea, select[multiple=multiple] {
+.vuetify-iso input[type=text], .vuetify-iso input[type=password], .vuetify-iso input[type=email], .vuetify-iso textarea, .vuetify-iso select[multiple=multiple] {
   border: none !important;
 }
 
-.vuetify-iso input[type=text][readonly], input[type=password][readonly], input[type=email][readonly], textarea[readonly] {
+.vuetify-iso input[type=text][readonly], .vuetify-iso input[type=password][readonly], .vuetify-iso input[type=email][readonly], .vuetify-iso textarea[readonly] {
    background-color: transparent; 
 }
 
-.vuetify-iso input[type=text], input[type=password], input[type=email], textarea, select[multiple=multiple] {
+.vuetify-iso input[type=text], .vuetify-iso input[type=password], .vuetify-iso input[type=email], .vuetify-iso textarea, .vuetify-iso select[multiple=multiple] {
     -webkit-box-shadow: none;
     box-shadow: none;
 }
