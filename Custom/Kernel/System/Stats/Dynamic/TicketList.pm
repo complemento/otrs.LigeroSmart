@@ -1345,7 +1345,7 @@ sub GetStatTable {
         PARAMETER:
         for my $ParameterName ( sort keys %Ticket ) {
             if ( $ParameterName =~ m{\A DynamicField_ ( [a-zA-Z\d]+ ) \z}xms ) {
-                my $DynamicFieldConfig = $Self->{DynamicFieldConfigs}->{$ParameterName};
+                my $DynamicFieldConfig = $Self->{DynamicFieldConfigs}->{$1};
                 # loop over the dynamic fields configured
                 # DYNAMICFIELD:
                 # for my $DynamicFieldConfig ( @{ $Self->{DynamicField} } ) {
